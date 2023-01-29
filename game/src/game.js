@@ -15,33 +15,29 @@ import Messages from './translations/messages'
 import config from './config'
 
 export class Game extends Phaser.Game {
-    constructor(options) {
+  constructor (options) {
+    let attr = calculateAttr(config.resolutions)
 
-        let attr = calculateAttr(config.resolutions);
+    // super(attr.width, attr.height, Phaser.CANVAS)
+    // Test for overlay full screen
+    super(window.innerWidth, window.innerHeight, Phaser.CANVAS, '', null, false, false)
 
+    this.attr = _.extend(attr, options)
+    this.attr.translator = new Messages(options.lang)
 
-        // super(attr.width, attr.height, Phaser.CANVAS)
-        // Test for overlay full screen
-        super(window.innerWidth, window.innerHeight, Phaser.CANVAS, '', null, false, false)
+    this.state.add('Boot', BootState, false)
+    this.state.add('Splash', SplashState, false)
+    this.state.add('MainMenu', MainMenuState, false)
+    this.state.add('Game', GameState, false)
+    this.state.add('GameStartTransition', GameStartTransitionState, false)
+    this.state.add('HighScores', HighScoresState, false)
+    this.state.add('Polls', PollsState, false)
 
-        this.attr = _.extend(attr, options)
-        this.attr.translator = new Messages(options.lang)
+    // with Cordova with need to wait that the device is ready so we will call the Boot state in another file
+    this.state.start('Boot')
+  }
 
-        this.state.add('Boot', BootState, false)
-        this.state.add('Splash', SplashState, false)
-        this.state.add('MainMenu', MainMenuState, false)
-        this.state.add('Game', GameState, false)
-        this.state.add('GameStartTransition', GameStartTransitionState, false)
-        this.state.add('HighScores', HighScoresState, false)
-        this.state.add('Polls', PollsState, false)
-
-        // with Cordova with need to wait that the device is ready so we will call the Boot state in another file
-        this.state.start('Boot')
-    }
-
-
-      translate(msg) {
-        return this.attr.translator.translate(msg)
-    }
+  translate (msg) {
+    return this.attr.translator.translate(msg)
+  }
 }
-

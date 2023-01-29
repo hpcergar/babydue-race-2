@@ -1,7 +1,7 @@
 {
-  "name": "babydue-race",
+  "name": "babydue-race-2",
   "version": "1.0.0",
-  "description": "For my little baby, a new adventure poll starring his sister :)",
+  "description": "For my little baby, a new adventure poll starring baby's siblings :)",
   "main": "src/index.js",
   "author": "hpcergar",
   "license": "ISC",
