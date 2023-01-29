@@ -1,0 +1,20 @@
+{{#if bets.length}}
+<div class="cell-icons">
+{{/if}}
+
+{{#each bets}}
+    {{!
+    <span class="fa-stack fa-lg">
+        <i class="fa fa-circle fa-stack-2x"></i>
+        }}
+<i class="fa {{!fa-stack-1x fa-inverse}}
+{{#is this.gender 'd'}}icon icon-fire{{/is}}
+{{#is this.gender 'f'}}fa-venus{{/is}}
+{{#is this.gender 'm'}}fa-mars{{/is}}
+ {{this.gender}}" title="{{username this.email ../users}}"></i>
+    {{!</span>}}
+{{/each}}
+
+{{#if bets.length}}
+</div>
+{{/if}}

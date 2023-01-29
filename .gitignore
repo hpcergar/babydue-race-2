@@ -1,0 +1,17 @@
+.idea
+.openshift
+node_modules
+README_private.md
+
+/dist
+/data/users.json
+/data/prod-backup
+/data/bets.json
+/data/log
+/game/build
+/config/config.js
+/config/production/*
+#/public/js/bundle.*
+dev.js
+logEmails
+bfg.jar

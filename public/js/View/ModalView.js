@@ -1,0 +1,142 @@
+define(function (require) {
+    'use strict';
+
+    var _ = require('underscore'),
+        $ = require('jquery'),
+        jQuery = require('jquery'),
+        dateHelper = require('../Helpers/Date').default,
+        Backbone = require('backbone'),
+        UserNotifications = require('../Helpers/UserNotifications').default,
+        t = require('../Lib/Messages').translate,
+        users = require('../Lib/Messages'),
+        template = require('./Templates/Modal.hbs')
+        ;
+
+
+    // "Do your bet" view
+    var ModalView = Backbone.View.extend({
+
+        template: template,
+
+        className: 'choicesModal container-fluid',
+
+        defaults: {
+            observer: null,
+            onSuccess: null,
+            bets: null,
+            haveWinner:null
+        },
+
+        events:{
+            'click button.choice' : "handleBet"
+        },
+
+        // List of bets
+        initialize: function (options) {
+
+            // Set event data
+            this.observer = options.observer;
+            this.onSuccess = options.onSuccess;
+            this.bets = options.currentBets;
+            this.users = options.users;
+            this.haveWinner = options.haveWinner;
+
+            // Main events here
+            // this.listenTo(dateBetSetCollection, 'reset', this.addAll); // When fetching / reset
+        },
+
+        render: function () {
+            
+            var choices = ['m', 'f', 'd'],  // Also controls gender display order
+                bets = this.bets.get('betCollection'),
+                context = {
+                    date: this.bets.get('date'),
+                    bets: {},   // every gender with/without current bet
+                    currentUserBet: this.model.toJSON(),
+                    users: this.users,
+                    haveWinner: this.haveWinner
+            };
+            
+            for(var i = 0, current; i < choices.length; i++){
+                current = bets.findBetByGender(choices[i]);
+                context.bets[ choices[i] ] = ( current ? current.toJSON() : current);
+            }
+
+            this.$el.html(this.template(context));
+
+            return this;
+        },
+
+        /**
+         * Handle toggle bet button
+         */
+        handleBet: function(e){
+            console.log('handled!');
+            // Get data from clicked el (param e)
+            var date = e.currentTarget.getAttribute('data-date'),
+                gender = e.currentTarget.getAttribute('data-gender')
+            ;
+
+            // If user sent bet, fill the model and send to server
+            this.model.set({
+                date:date,
+                gender:gender,
+                email:window.app.conf.EMAIL
+            });
+
+            this.saveBet(e.currentTarget);
+
+
+            // If user deselected bet, remove from server
+            //this.removeBet();
+
+        },
+
+        /**
+         * Save bet in server
+         */
+        saveBet: function(el){
+            this.model.save(null, {
+                success :_.bind(function() {
+
+                    // Remove other "btn-success" classes
+                    this.$el.find('.btn-success').removeClass('btn-success');
+
+                    // Then add new
+                    el.classList.add('btn-success');
+
+                    // Notify
+                    this.onSaveSuccess();
+                }, this),
+                error: _.bind(this.onSaveError, this)});
+        },
+
+        // TODO Nice to have
+        removeBet: function(){
+
+            // this.model.destroy();
+
+            this.onSaveSuccess();
+        },
+
+        /**
+         * When sending data to server, if everything ok, notify observer
+         */
+        onSaveSuccess:function(){
+            UserNotifications.showSuccess(t('Bet saved'));
+            // Fire events on observer
+            this.observer.trigger(this.onSuccess);
+        },
+
+        /**
+         * When error sending bet to server
+         */
+        onSaveError:function(){
+            UserNotifications.showError(t('Error saving bet'));
+        }
+
+
+    });
+
+    return ModalView;
+});

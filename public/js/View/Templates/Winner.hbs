@@ -1,0 +1,14 @@
+<h2>{{t 'And the winner is'}}</h2>
+<h1>{{date}}</h1>
+<div>
+{{#each positions}}
+    <div>
+        <h3>{{@key}} - {{this.name}}</h3>
+        <i class="fa fa-4x
+            {{#is this.gender 'd'}}icon icon-fire{{/is}}
+            {{#is this.gender 'f'}}fa-venus{{/is}}
+            {{#is this.gender 'm'}}fa-mars{{/is}}
+            {{this.gender}}"></i>
+    </div>
+{{/each}}
+</div>

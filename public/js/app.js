@@ -1,0 +1,27 @@
+import 'es5-shim';
+
+import App from 'Router/Router';
+import Messages from 'Lib/Messages';
+import _ from 'lodash';
+
+function getURLParameter(name) {
+    return decodeURIComponent((new RegExp('[?|&]' + name + '=' + '([^&;]+?)(&|#|;|$)').exec(location.search)||[,""])[1].replace(/\+/g, '%20'))||null;
+}
+
+var lang = navigator.language,
+    conf = _.extend({
+        // Birth estimated date
+        ESTIMATED_DATE: '2018-10-20',
+        LANG: (/es/.test(lang) ? 'es' : 'fr'),
+        EMAIL:  getURLParameter('email'),
+        SIGNATURE: getURLParameter('signature')  
+    });
+
+// Init I18n
+Messages.setDictionary(conf.LANG);
+
+// Go!
+var app = new App(conf);
+
+app.start();
+
