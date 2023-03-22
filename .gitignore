@@ -9,6 +9,7 @@ README_private.md
 /data/bets.json
 /data/log
 /game/build
+/game/node_modules
 /config/config.js
 /config/production/*
 #/public/js/bundle.*

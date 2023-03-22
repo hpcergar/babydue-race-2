@@ -47,9 +47,15 @@ export default {
         // Debug: Undo switch back
         // source: ":scale/autumn/autumn-sandbox.json"
       },
-      player: {
+      playerAria: {
         type: 'spritesheet',
         source: 'aria.png',
+        width: 64,
+        height: 64
+      },
+      playerJulen: {
+        type: 'spritesheet',
+        source: 'julen.png',
         width: 64,
         height: 64
       },

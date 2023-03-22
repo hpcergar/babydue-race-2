@@ -1,6 +1,7 @@
-# Babydue race
+# Babydue race 2
 
-Our charming girl wants to meet her forthcoming brother or sister, help her to find the way to the hospital!
+# TODO
+Our charming girl wants to meet her forthcoming brother or sister, help her find the way to the hospital!
 And then, will it be a boy? A girl? Or... a wolf? You can also have fun betting date and gender on our calendar!
  
 This is a web application featuring a 2D endless runner game and a baby due bet calendar. 

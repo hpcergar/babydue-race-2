@@ -17,6 +17,7 @@ var definePlugin = new webpack.DefinePlugin({
 })
 
 module.exports = {
+    mode: "development",
     entry: {
         app: [
             'babel-polyfill',
@@ -29,17 +30,27 @@ module.exports = {
         pathinfo: true,
         path: path.resolve(__dirname, 'dist'),
         publicPath: './dist/',
-        filename: 'bundle.js'
+        // filename: 'bundle.js'
+        filename: '[name].js'
     },
-    watch: true, watchOptions: {
+    watch: true,
+    watchOptions: {
         poll: 1500
+    },
+    optimization: {
+        splitChunks: {
+            cacheGroups: {
+                name: 'vendor'/* chunkName= */,
+                filename: 'vendor.bundle.js'/* filename= */
+            }
+        }
     },
     plugins: [
         definePlugin,
-        new webpack.optimize.CommonsChunkPlugin({
-            name: 'vendor'/* chunkName= */,
-            filename: 'vendor.bundle.js'/* filename= */
-        }),
+        // new webpack.optimize.CommonsChunkPlugin({
+        //     name: 'vendor'/* chunkName= */,
+        //     filename: 'vendor.bundle.js'/* filename= */
+        // }),
         new HtmlWebpackPlugin({
             filename: '../index.html',
             template: './src/index.html',
@@ -58,8 +69,9 @@ module.exports = {
             hash: false
         }),
         new BrowserSyncPlugin({
-            host: process.env.IP || 'localhost',
+            host: process.env.IP || '0.0.0.0',
             port: process.env.PORT || 3000,
+            // proxy: 'http://localhost:3100/'
             server: {
                 baseDir: ['./', './build']
             }
@@ -72,23 +84,93 @@ module.exports = {
     ],
     module: {
         rules: [
-            {test: /\.js$/, use: ['babel-loader'], include: path.join(__dirname, 'src')},
-            {test: /pixi\.js/, use: ['expose-loader?PIXI']},
-            {test: /phaser-split\.js$/, use: ['expose-loader?Phaser']},
-            {test: /p2\.js/, use: ['expose-loader?p2']},
-            {test: /lodash\.js/, use: ['expose-loader?_!lodash']},
-            {test: /jquery\.js/, use: ['expose-loader?$!jquery']},
-
-            {test: /SAT\.js$/, use: ['expose-loader?SAT']},
-            {test: /phaser-arcade-slopes\.js$/, use: ['expose-loader?phaserSlopes']},
-            {test: /DebugArcadePhysics\.js$/, use: ['expose-loader?DebugArcadePhysics']}
+            {
+                test: /\.js$/,
+                use: ['babel-loader'],
+                include: path.join(__dirname, 'src')
+            },
+            {
+                test: /pixi\.js/,
+                loader: 'expose-loader',
+                options: {
+                    exposes: {
+                        globalName: 'PIXI',
+                        override: true
+                    },
+                }
+            },
+            {
+                test: /phaser-split\.js$/,
+                loader: 'expose-loader',
+                options: {
+                    exposes: {
+                        globalName: 'Phaser',
+                        override: true
+                    },
+                }
+            },
+            {
+                test: /p2\.js/,
+                loader: 'expose-loader',
+                options: {
+                    exposes: {
+                        globalName: 'p2',
+                        override: true
+                    },
+                }
+            },
+            {
+                test: /lodash\.js/,
+                loader: 'expose-loader',
+                options: {
+                    exposes: {
+                        globalName: '_!lodash',
+                        override: true
+                    },
+                }
+            },
+            {
+                test: /jquery\.js/,
+                loader: 'expose-loader',
+                options: {
+                    exposes: {
+                        globalName: '$!jquery',
+                        override: true
+                    },
+                }
+            },
+            {
+                test: /SAT\.js$/,
+                loader: 'expose-loader',
+                options: {
+                    exposes: {
+                        globalName: 'SAT',
+                        override: true
+                    },
+                }
+            },
+            {
+                test: /phaser-arcade-slopes\.js$/,
+                loader: 'expose-loader',
+                options: {
+                    exposes: {
+                        globalName: 'phaserSlopes',
+                        override: true
+                    },
+                }
+            },
+            {
+                test: /DebugArcadePhysics\.js$/,
+                loader: 'expose-loader',
+                options: {
+                    exposes: {
+                        globalName: 'DebugArcadePhysics',
+                        override: true
+                    },
+                }
+            }
 
         ]
-    },
-    node: {
-        fs: 'empty',
-        net: 'empty',
-        tls: 'empty'
     },
     resolve: {
         alias: {
@@ -97,7 +179,13 @@ module.exports = {
             'p2': p2,
             'phaserSlopes': phaserSlopes,
             'DebugArcadePhysics': debugArcade,
-             'SAT': SAT,
+            'SAT': SAT
+        },
+        fallback: {
+            fs: false,
+            net: false,
+            tls: false,
+            crypto: false
         }
     }
 }

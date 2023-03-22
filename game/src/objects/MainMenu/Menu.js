@@ -35,33 +35,33 @@ class Menu {
     if (this.options.title) {
       let topOffset = navigationOffset - 40
       let text = this.game.add.text(this.getLeftOffset(), topOffset, this.options.title + ' ')
-		    text.anchor.set(0.5)
-		    text.align = 'center'
-		    text.font = Config.font.title.font
-		    text.fontSize = 25 * this.fontScale
-		    text.fill = '#455c3d'
-    		text.strokeThickness = 0
+      text.anchor.set(0.5)
+      text.align = 'center'
+      text.font = Config.font.title.font
+      text.fontSize = 25 * this.fontScale
+      text.fill = '#455c3d'
+      text.strokeThickness = 0
 
-    		this.items.push(text)
+      this.items.push(text)
     }
 
     this.options.items.forEach((navItem, index) => {
       let topOffset = navigationOffset + index * 120 * this.heightScale
       let text = this.game.add.text(this.getLeftOffset(), topOffset, navItem.label + ' ')
       text.inputEnabled = true
-		    text.anchor.set(0.5)
-		    text.align = 'center'
-		    text.font = Config.font.title.font
-		    text.fontSize = 80 * this.fontScale
-		    text.fill = '#e5b900'
-		    text.stroke = '#504c39'
-    		text.strokeThickness = 0
-    		text.index = index
+      text.anchor.set(0.5)
+      text.align = 'center'
+      text.font = Config.font.title.font
+      text.fontSize = 80 * this.fontScale
+      text.fill = '#e5b900'
+      text.stroke = '#504c39'
+      text.strokeThickness = 0
+      text.index = index
       text.callback = navItem.callback
       text.events.onInputUp.add(text.callback)
-    		text.events.onInputOver.add(_.bind(this.itemOnActive, this, text))
+      text.events.onInputOver.add(_.bind(this.itemOnActive, this, text))
 
-    		this.items.push(text)
+      this.items.push(text)
     }, this)
   }
 
@@ -119,10 +119,10 @@ class Menu {
   registerKeyhandler () {
     this.game.input.keyboard.onUpCallback = _.bind(function (e) {
       if (e.keyCode == Phaser.Keyboard.UP) {
-	  			this.moveCursor(this.getPrevIndex())
+        this.moveCursor(this.getPrevIndex())
       }
       if (e.keyCode == Phaser.Keyboard.DOWN) {
-	  			this.moveCursor(this.getNextIndex())
+        this.moveCursor(this.getNextIndex())
       }
       if (e.keyCode == Phaser.Keyboard.ENTER) {
         this.items[this.getActiveIndex()].callback()

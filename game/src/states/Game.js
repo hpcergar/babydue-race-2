@@ -62,8 +62,8 @@ export default class extends Phaser.State {
     this.game.physics.startSystem(Phaser.Physics.ARCADE)
 
     // STATE
-    // TODO False on production
-    this.debug = false
+    // Keep these false on production
+    this.debug = true // TODO Undo
     this.debugFps = false
 
     if (this.debug || this.debugFps) {
@@ -120,7 +120,7 @@ export default class extends Phaser.State {
     // Overlay, for transitions
     this.overlay = new Overlay(this.game)
 
-    this.game.world.bringToTop(this.player.getObject())
+    this.game.world.bringToTop(this.player.getSprite())
 
     // Full screen
     this.game.input.onTap.add(this.scaleService.goFullScreen, this.scaleService)
@@ -181,10 +181,10 @@ export default class extends Phaser.State {
   }
 
   update () {
-    let hitGround = this.game.physics.arcade.collide(this.player.getObject(), this.mainLayer, (player, ground) => this.player.setCollisionData(ground))
+    let hitGround = this.game.physics.arcade.collide(this.player.getSprite(), this.mainLayer, (player, ground) => this.player.setCollisionData(ground))
 
     if (!this.isEndAnimation) {
-      this.collectibles.update(this.player.getObject())
+      this.collectibles.update(this.player.getSprite())
       this.player.update(hitGround)
       this.score.update()
     } else if (this.textPanel && this.textPanel.update) {
@@ -257,7 +257,7 @@ export default class extends Phaser.State {
 
     // let playerObject = this.player.getObject()
     this.game.world.bringToTop(this.overlay.getObject())
-    this.game.world.bringToTop(this.player.getObject())
+    this.game.world.bringToTop(this.player.getSprite())
     let score = this.score.get()
 
     // Push new score to API
@@ -271,7 +271,7 @@ export default class extends Phaser.State {
     // Start transition
     // 1. Display overlay
     this.overlay.fade(1000, () => {
-      let playerObject = this.player.getObject()
+      let playerObject = this.player.getSprite()
       // 2. Move camera to have player on the left
       this.game.camera.follow(null)
       playerObject.body.velocity.x = 0
@@ -308,7 +308,7 @@ export default class extends Phaser.State {
       // Display layers accordingly
       this.game.world.bringToTop(this.tilemapProvider.getGroundLayer())
       this.game.world.bringToTop(this.door.getObject())
-      this.game.world.bringToTop(this.player.getObject())
+      this.game.world.bringToTop(this.player.getSprite())
       this.game.world.bringToTop(this.layers[FRONT_LAYER])
 
       this.game.camera.follow(null)
