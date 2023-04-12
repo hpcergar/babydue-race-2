@@ -1,29 +1,15 @@
 import Input from '../services/Input'
 import Points from '../services/Points'
-import Config from '../config'
+import Constants from '../constants'
 import {Aria} from './characters/Aria'
 import {Julen} from './characters/Julen'
 
-const ANIMATION_STANDING = 'standing'
-const ANIMATION_RUNNING = 'running'
-
-const CHARACTER_ARIA = 'playerAria'
-const CHARACTER_JULEN = 'playerJulen'
-
-const GAME_VELOCITY = Config.player.gameVelocity
-const JUMP = -550
-const JUMP_MECHANIC = 2 * JUMP
-const END_ANIMATION_VELOCITY = Config.player.endAnimationVelocity
-const INPUT_COOLDOWN = 500
-
-const SLOPE_NONE = 0
-const SLOPE_ASCENDING = 1
-const SLOPE_DESCENDING = 2
-
-const SLOPE_TYPE_JUMP = 22
-const SLOPE_TYPE_SLOW = 20
 
 export default class {
+    /**
+     * @type Character
+     */
+    player;
     constructor(game, debug = false) {
         // Starts
         this.game = game
@@ -47,10 +33,10 @@ export default class {
 
         // Add the sprite to the game and enable arcade physics on it
         this.loadCharacters(game, debug, startX, startY)
-        this.enableCharacter(CHARACTER_JULEN)
+        this.enableCharacter(Constants.characters.CHARACTER_JULEN)
 
         // PHYSICS
-        this.velocity = GAME_VELOCITY
+        this.velocity = Constants.mechanics.GAME_VELOCITY
         this.speedUp = false
         // Start stopped
         this.getSprite().body.velocity.x = 0
@@ -60,7 +46,7 @@ export default class {
         // this.game.debug.reset();
 
         // ANIMATIONS
-        this.getSprite().animations.play(ANIMATION_STANDING)
+        this.getSprite().animations.play(Constants.animations.ANIMATION_STANDING)
         this.lookingRight = true
 
         // CONTROLS
@@ -71,8 +57,8 @@ export default class {
         this.characters = {}
         let julen = new Julen(game, debug, startX, startY)
         let aria = new Aria(game, debug, startX, startY)
-        this.characters[CHARACTER_JULEN] = julen
-        this.characters[CHARACTER_ARIA] = aria
+        this.characters[Constants.characters.CHARACTER_JULEN] = julen
+        this.characters[Constants.characters.CHARACTER_ARIA] = aria
         aria.setInactive()
     }
 
@@ -89,7 +75,7 @@ export default class {
         character.setActive();
         this.player = character
 
-        this.getSprite().animations.play(ANIMATION_STANDING)
+        this.getSprite().animations.play(Constants.animations.ANIMATION_STANDING)
         // Make the camera follow the sprite
         this.game.camera.follow(this.getSprite())
     }
@@ -140,16 +126,18 @@ export default class {
         // Speed up if beyond point
         if (this.speedUp === false && this.isBeyondSpeedUpPoint()) {
             this.speedUp = true
-            this.velocity = 1.5 * GAME_VELOCITY
+            this.velocity = 1.5 * Constants.mechanics.GAME_VELOCITY
         }
 
         let wasStanding = this.getSprite().body.velocity.x === 0
+        let isHittingGround = this.player.isHittingGround(hitting)
 
-        if (this.debug) {
-            this.getSprite().body.velocity.x = 0
-        }
+        // For debug
+        // if (this.debug) {
+        //     this.getSprite().body.velocity.x = 0
+        // }
 
-        let hittingGround = hitting && this.getSprite().body.touching.down
+
 
         // Disable last jump bug on slopes
         if (hitting && this.getSprite().slopeId) {
@@ -162,64 +150,59 @@ export default class {
         // Rotation, acceleration, etc.
         this.adaptOnSlope(this.getSprite().slopeId)
 
+        let slopeUpFactor = this.slopeUpFactor(this.getSprite().slopeId, this.getSprite().body.velocity.y)
+        if (this.isPlayable /*&& this.debug === false*/) {
+            this.getSprite().body.velocity.x = this.velocity - slopeUpFactor
+        }
+
         // If on the ground, allow jump or mechanic: jump
-        if (hittingGround) {
-            // Mechanic: jump (boing!)
-            if (this.getSprite().slopeId === SLOPE_TYPE_JUMP) {
-                this.getSprite().body.velocity.y = JUMP_MECHANIC
-                this.vibrate()
-            } else {
-                if (this.isInputPressed()) {
-                    this.switchCharacters()
-                }
+        if (isHittingGround) {
+            if (this.isInputPressed()) {
+                this.switchCharacters()
+            }
+            this.player.update(this.getGameStateForPlayer())
 
-
+            /*
                 if (this.debug && this.input.isSpacebarDown()) {
                     // Jump
-                    let velocityY = JUMP
-                    if (this.inclination === SLOPE_ASCENDING) {
-                        velocityY = JUMP - 100
-                    } else if (this.inclination === SLOPE_DESCENDING) {
-                        velocityY = JUMP + 550
+                    let velocityY = Constants.mechanics.JUMP
+                    if (this.inclination === Constants.slopes.SLOPE_ASCENDING) {
+                        velocityY = Constants.mechanics.JUMP - 100
+                    } else if (this.inclination === Constants.slopes.SLOPE_DESCENDING) {
+                        velocityY = Constants.mechanics.JUMP + 550
                     }
                     this.getSprite().body.velocity.y = velocityY
                 }
-            }
+            */
         }
 
-        //
-        let slopeUpFactor = this.slopeUpFactor(this.getSprite().slopeId, this.getSprite().body.velocity.y)
-
-        if (this.isPlayable && this.debug === false) {
-            this.getSprite().body.velocity.x = this.velocity - slopeUpFactor
-        }
 
         // Manual debug
-        if (this.cursors.left.isDown && this.debug) {
-            if (this.lookingRight) {
-                this.getSprite().scale.x *= -1
-                this.lookingRight = false
-            }
-            this.getSprite().body.velocity.x = -this.velocity + slopeUpFactor
-        } else if (this.cursors.right.isDown && this.debug) {
-            if (!this.lookingRight) {
-                this.getSprite().scale.x *= -1
-                this.lookingRight = true
-            }
-            this.getSprite().body.velocity.x = this.velocity - slopeUpFactor
-        }
-
-        // Mechanic: drag
-        if (this.getSprite().slopeId === SLOPE_TYPE_SLOW && this.getSprite().body.velocity.x !== 0) {
-            this.getSprite().body.velocity.x = (this.getSprite().body.velocity.x >= 0 ? 1 : -1) * (this.velocity / 8)
-            this.vibrate()
-        }
+        // if (this.cursors.left.isDown && this.debug) {
+        //     if (this.lookingRight) {
+        //         this.getSprite().scale.x *= -1
+        //         this.lookingRight = false
+        //     }
+        //     this.getSprite().body.velocity.x = -this.velocity + slopeUpFactor
+        // } else if (this.cursors.right.isDown && this.debug) {
+        //     if (!this.lookingRight) {
+        //         this.getSprite().scale.x *= -1
+        //         this.lookingRight = true
+        //     }
+        //     this.getSprite().body.velocity.x = this.velocity - slopeUpFactor
+        // }
 
         // Animations
         if (wasStanding && this.getSprite().body.velocity.x !== 0) {
-            this.getSprite().animations.play(ANIMATION_RUNNING)
+            this.getSprite().animations.play(Constants.animations.ANIMATION_RUNNING)
         } else if (!wasStanding && this.getSprite().body.velocity.x === 0) {
-            this.getSprite().animations.play(ANIMATION_STANDING)
+            this.getSprite().animations.play(Constants.animations.ANIMATION_STANDING)
+        }
+    }
+
+    getGameStateForPlayer() {
+        return {
+            velocity: this.velocity
         }
     }
 
@@ -228,7 +211,7 @@ export default class {
             this.isInputCoolingDown = true
             setTimeout(() => {
                 this.isInputCoolingDown = false
-            }, INPUT_COOLDOWN)
+            }, Constants.mechanics.INPUT_COOLDOWN)
             return true
         }
         return false;
@@ -237,13 +220,6 @@ export default class {
     run() {
         this.isPlayable = true
         this.getSprite().body.velocity.x = this.velocity
-    }
-
-    vibrate() {
-        // Vibration
-        // if("vibrate" in window.navigator) {
-        //     window.navigator.vibrate(100);
-        // }
     }
 
     setCollisionData(ground) {
@@ -272,16 +248,16 @@ export default class {
         // Rotation
         switch (slopeId) {
             case 1:
-                this.inclination = SLOPE_DESCENDING
+                this.inclination = Constants.slopes.SLOPE_DESCENDING
                 this.getSprite().angle = 45
                 break
             case 2:
-                this.inclination = SLOPE_ASCENDING
+                this.inclination = Constants.slopes.SLOPE_ASCENDING
                 this.getSprite().angle = -45
                 break
             // Mechanic jump
             default:
-                this.inclination = SLOPE_NONE
+                this.inclination = Constants.slopes.SLOPE_NONE
                 if (this.getSprite().angle !== 0) {
                     this.getSprite().angle = 0
                 }
@@ -298,8 +274,8 @@ export default class {
 
     startEndAnimation() {
         this.isPlayable = false
-        this.getSprite().body.velocity.x = END_ANIMATION_VELOCITY
-        this.getSprite().animations.play(ANIMATION_RUNNING)
+        this.getSprite().body.velocity.x = Constants.animations.END_ANIMATION_VELOCITY
+        this.getSprite().animations.play(Constants.animations.ANIMATION_RUNNING)
     }
 
     goToPoint(name, callback = undefined) {

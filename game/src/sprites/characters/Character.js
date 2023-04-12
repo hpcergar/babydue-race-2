@@ -37,4 +37,8 @@ export class Character {
         this.sprite.visible = false
         if( this.debug ) console.log(`Disabling ` + this.constructor["name"])
     }
+
+    isHittingGround (hitting) {
+        return hitting && this.getSprite().body.touching.down
+    }
 }

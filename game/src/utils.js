@@ -1,13 +1,7 @@
-import config from './config'
-
 export const orientation = () => {
   screen.lockOrientationUniversal = screen.lockOrientation || screen.mozLockOrientation || screen.msLockOrientation
 
-  if (screen.lockOrientationUniversal && screen.lockOrientationUniversal('landscape')) {
-    return true
-  }
-
-  return false
+  return screen.lockOrientationUniversal && screen.lockOrientationUniversal('landscape')
 }
 
 export const centerGameObjects = (objects) => {
