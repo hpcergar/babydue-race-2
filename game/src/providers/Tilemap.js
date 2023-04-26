@@ -41,7 +41,8 @@ export default class {
             })
           })
           map.setCollision(collision_tiles, true, layer.name)
-
+          // FirstGid is used here because we import 2 different layers: one visual, with tiles from 0 to 25, and the collision one (ninja), from 26 to 50
+          // Since the visual layer already reserves the numbers 0 to 25, we must use this firstGidOffset for the collision layer
           game.slopes.convertTilemapLayer(this.layers[layer.name], 'ninja', firstGid ? firstGid.value : undefined)
           this.layers[layer.name].visible = false
         }

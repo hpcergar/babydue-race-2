@@ -19,7 +19,12 @@ export class Aria extends Character {
     update (gameState) {
         // Mechanic: jump (boing!)
         if (this.getSprite().slopeId === Constants.slopes.SLOPE_TYPE_JUMP) {
-            this.getSprite().body.velocity.y = Constants.mechanics.JUMP_MECHANIC
+            this.getSprite().body.velocity.y = Constants.mechanics.JUMP
+        }
+
+        // Mechanic: Rock
+        if (this.getSprite().slopeId === Constants.slopes.SLOPE_TYPE_ROCK) {
+            this.getSprite().body.velocity.x = 0
         }
 
         // Mechanic: drag

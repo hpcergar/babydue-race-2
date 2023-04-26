@@ -10,6 +10,7 @@ export default class {
     map.createFromObjects(layerName, 'End-tower', 'autumn-objects', 22, true, true, layer)
     map.createFromObjects(layerName, 'Mech-Jump', 'autumn-objects', 27, true, true, layer)
     map.createFromObjects(layerName, 'Mech-Slow', 'autumn-objects', 10, true, true, layer)
+    map.createFromObjects(layerName, 'Mech-Rock', 'autumn-objects', 26, true, true, layer)
     map.createFromObjects(layerName, 'Door', 'autumn-objects', 4, true, true, layer)
     map.createFromObjects(layerName, 'DoorMask', 'autumn-objects', 29, true, true, layer)
 

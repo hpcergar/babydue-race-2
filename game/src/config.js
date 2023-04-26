@@ -43,9 +43,8 @@ export default {
       level: {
         type: 'tilemap-json',
 
-        source: ':scale/autumn/autumn.json'
-        // Debug: Undo switch back
-        // source: ":scale/autumn/autumn-sandbox.json"
+        // source: ':scale/autumn/autumn.json' // TODO Clean up folder?
+        source: ':scale/summer/summer.json'
       },
       playerAria: {
         type: 'spritesheet',

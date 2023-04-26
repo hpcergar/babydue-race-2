@@ -17,6 +17,7 @@ export class Julen extends Character {
     }
 
     update (gameState) {
+        // TODO Interact with Rock
 
     }
 }
