@@ -22,9 +22,10 @@ export default {
         SLOPE_NONE: 0,
         SLOPE_ASCENDING: 1,
         SLOPE_DESCENDING: 2,
-        SLOPE_TYPE_JUMP: 22,
-        SLOPE_TYPE_ROCK: 19,
-        SLOPE_TYPE_SLOW: 20
+        SLOPE_TYPE_JUMP: 22,    // HALF_TOP
+        SLOPE_TYPE_ROCK: 19,    // QUARTER_TOP_RIGHT_LOW
+        SLOPE_TYPE_SLOW: 20,    // QUARTER_TOP_RIGHT_HIGH
+        SLOPE_TYPE_FAST: 18     // QUARTER_TOP_LEFT_HIGH
 
         /**
          * To know which ID goes here, check the arcade slopes Phaser.Plugin.ArcadeSlopes.TileSlope.typeNames

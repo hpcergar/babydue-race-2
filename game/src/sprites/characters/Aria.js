@@ -31,5 +31,11 @@ export class Aria extends Character {
         if (this.getSprite().slopeId === Constants.slopes.SLOPE_TYPE_SLOW && this.getSprite().body.velocity.x !== 0) {
             this.getSprite().body.velocity.x = (this.getSprite().body.velocity.x >= 0 ? 1 : -1) * (gameState.velocity / 8)
         }
+
+        // Mechanic: fast
+        if (this.getSprite().slopeId === Constants.slopes.SLOPE_TYPE_FAST && this.getSprite().body.velocity.x !== 0) {
+            // This could be improved with a longer effect, with a setTimeout to remove it
+            this.getSprite().body.velocity.x = (this.getSprite().body.velocity.x >= 0 ? 1 : -1) * (gameState.velocity * 2)
+        }
     }
 }
