@@ -16,7 +16,7 @@ export default {
         JUMP,
         JUMP_MECHANIC: 2 * JUMP,
         END_ANIMATION_VELOCITY: Config.player.endAnimationVelocity,
-        INPUT_COOLDOWN: 500
+        INPUT_COOLDOWN: 200
     },
     slopes: {
         SLOPE_NONE: 0,
