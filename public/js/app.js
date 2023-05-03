@@ -9,10 +9,15 @@ function getURLParameter(name) {
 }
 
 var lang = navigator.language,
+    guessedLang = (
+        /es/.test(lang)
+            ? 'es'
+            : (/fr/.test(lang) ? 'fr' : 'en')
+    ),
     conf = _.extend({
         // Birth estimated date
-        ESTIMATED_DATE: '2018-10-20',
-        LANG: (/es/.test(lang) ? 'es' : 'fr'),
+        ESTIMATED_DATE: '2023-07-03',
+        LANG: guessedLang,
         EMAIL:  getURLParameter('email'),
         SIGNATURE: getURLParameter('signature')  
     });

@@ -4,6 +4,8 @@ define(function(require){
     var _ = require('underscore'),
         $ = require('jquery'),
         datepicker = require('jquery-ui/ui/widgets/datepicker'),
+        datepickerEs = require('jquery-ui/ui/i18n/datepicker-es'),
+        datepickerFr = require('jquery-ui/ui/i18n/datepicker-fr'),
         remodal = require('remodal'),
         Backbone = require('backbone'),
         template = require('./Templates/Main.hbs'),

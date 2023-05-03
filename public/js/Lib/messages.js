@@ -3,7 +3,8 @@
 
 var dicts = {
         fr: require('./I18n/fr'),
-        es: require('./I18n/es')
+        es: require('./I18n/es'),
+        en: require('./I18n/en')
     },
     dict;
 
@@ -22,7 +23,6 @@ function translate(msg) {
 }
 
 function setDictionary(lang) {
-
     if (! lang || ! dicts[lang]) return;
     dict = dicts[lang];
 }

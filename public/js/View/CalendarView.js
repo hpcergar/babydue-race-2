@@ -66,8 +66,8 @@ define(function (require) {
                 this.datepicker = this.$el.datepicker({
                     numberOfMonths: this.calendarNumberOfMonths,
                     firstDay: 1, // Start with Monday
-                    minDate: new Date('2018-09-10'),
-                    maxDate: new Date('2018-10-28'),
+                    minDate: new Date('2023-06-01'),
+                    maxDate: new Date('2023-07-13'),
                     dayNamesMin: t('calendar.dayNamesMin').split(','),
 
                     // Render each day method
@@ -80,6 +80,15 @@ define(function (require) {
                     onSelect: _.bind(this.calendarSelect, this),
 
                 });
+
+                switch(window.app.conf.LANG) {
+                    case 'es':
+                        this.$el.datepicker( "option", $.datepicker.regional.es )
+                        break;
+                    case 'fr':
+                        this.$el.datepicker( "option", $.datepicker.regional.fr )
+                        break;
+                }
             } else {
                 this.$el.datepicker('refresh');
             }
