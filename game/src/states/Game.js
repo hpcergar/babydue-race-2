@@ -70,7 +70,7 @@ export default class extends Phaser.State {
       this.game.time.advancedTiming = true
     }
 
-    // Score
+    // Score (Time)
     this.score = new Score(this.game)
     this.highscoresService = new HighscoresService()
     this.textPanel = {}
@@ -104,7 +104,7 @@ export default class extends Phaser.State {
     this.door = new Door(this.game)
 
     // Collectibles (coins, stars)
-    this.collectibles = new Collectibles(this.game, this.map, this.score)
+    this.collectibles = new Collectibles(this.game, this.map)
 
     // Player (Aria)
     this.player = new Player(this.game, this.debug)
@@ -132,7 +132,7 @@ export default class extends Phaser.State {
       this.score.show()
       this.game.world.bringToTop(this.layers[FRONT_LAYER])
       if (this.debug) {
-        this.player.run()
+        this.startPlayableGame()
       } else {
         // Normal flow
         this.startBeginTransition()
@@ -197,6 +197,7 @@ export default class extends Phaser.State {
 
     // End game
     if (this.player.isPlayable && this.player.isBeyondEndPoint()) {
+      this.score.stop()
       this.startEndAnimation()
     }
   }
@@ -211,8 +212,13 @@ export default class extends Phaser.State {
           this.countDownNumber(this.game.translate('Despegue'), () => {
             // Remove full screen handler
             this.scaleService.disableFullScreen()
-            this.player.run()
+            this.startPlayableGame()
           }))))
+  }
+
+  startPlayableGame () {
+    this.score.start()
+    this.player.run()
   }
 
   /**
@@ -258,15 +264,15 @@ export default class extends Phaser.State {
     // let playerObject = this.player.getObject()
     this.game.world.bringToTop(this.overlay.getObject())
     this.game.world.bringToTop(this.player.getSprite())
-    let score = this.score.get()
+    let time = this.score.get()
 
     // Push new score to API
-    let bestScore = this.highscoresService.getUserScore()
-    let position = this.highscoresService.getScorePosition(score)
-    this.highscoresService.saveScore(score)
+    let bestTime = this.highscoresService.getUserTime()
+    let position = this.highscoresService.getUserPositionInTop10(time)
+    this.highscoresService.saveTime(time)
 
     // Score text & position if <= 10th
-    let text = this.getEndText(score, position, bestScore)
+    let text = this.getEndText(time, position, bestTime)
 
     // Start transition
     // 1. Display overlay
@@ -282,7 +288,7 @@ export default class extends Phaser.State {
       }, 750, Phaser.Easing.Quadratic.InOut)
 
       moveCameraToRight.onComplete.addOnce(() => {
-        // 3. Display end message with score & position
+        // 3. Display end message with time & position
         this.textPanel = new TextPanel(this.game, text, () => {
           // 4. Follow player again
           this.game.camera.follow(playerObject, Phaser.Camera.FOLLOW_LOCKON, 0.1)
@@ -329,21 +335,21 @@ export default class extends Phaser.State {
 
   /**
      * Calculate text after having finished level
-     * @param score
+     * @param time
      * @param position
-     * @param bestScore
+     * @param bestTime
      * @returns {*[]}
      */
-  getEndText (score, position, bestScore) {
-    let text = this.game.translate('Congratulations').replace(':score', score),
-      isBestScore = (bestScore && score >= bestScore) || !bestScore
+  getEndText (time, position, bestTime) {
+    let text = this.game.translate('Congratulations').replace(':time', time),
+      isBestTime = (bestTime && time <= bestTime) || !bestTime
 
-    if (position !== false && isBestScore) {
+    if (position !== false && isBestTime) {
       text = text.concat('\n' + this.game.translate('You are in the top 10').replace(':position', position))
     }
 
-    if (!isBestScore && bestScore) {
-      text = text.concat('\n\n' + this.game.translate('Your best score is').replace(':score', bestScore))
+    if (!isBestTime && bestTime) {
+      text = text.concat('\n\n' + this.game.translate('Your best time is').replace(':time', bestTime))
     }
 
     return [text] // As single page, you could add multiple for each displayed page

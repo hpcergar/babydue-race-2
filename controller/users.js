@@ -9,19 +9,27 @@ var model = require('../models/users'),
  *
  * @param params
  * @param emailOrig
- * @param scoreSignature
  * @param callback
  */
-exports.save = function (params, emailOrig, scoreSignature, callback) {
-
+exports.save = function (params, emailOrig, callback)
+{
     let email = params.email;
 
     // Data validation
-    if(!params.email || !validator.isEmail(email)){callback(new Error('Invalid email'), null);return;}
-    if(email !== emailOrig){callback(new Error('Sent email ' + email + ' is not the same as authenticated one ' + emailOrig), null);return;}
+    if (!params.email || !validator.isEmail(email)) {
+        callback(new Error('Invalid email'), null);
+        return;
+    }
+    if (email !== emailOrig) {
+        callback(new Error('Sent email ' + email + ' is not the same as authenticated one ' + emailOrig), null);
+        return;
+    }
 
     // Winner check
-    if(winner.haveWinner()){callback(new Error('Bets disabled: we already got a winner!'), null);return;}
+    if (winner.haveWinner()) {
+        callback(new Error('Bets disabled: we already got a winner!'), null);
+        return;
+    }
 
     // Save user by email
     model.save(params, callback);

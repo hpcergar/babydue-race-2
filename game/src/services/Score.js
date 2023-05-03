@@ -2,61 +2,60 @@ export default class {
   constructor (game) {
     // Starts
     this.game = game
-    this.score = 0
-    this.digitNumber = 7
     this.isHidden = false
     this.topOffset = 20
     this.rightOffset = 20
     this.characterWidth = 25
+
+    this.isStarted = false;
+    this.startTime = 0
+    this.elapsedTime = 0
+    this.textualElapsedTime = this.format(0)
   }
 
   create () {
     const [labelX, labelY] = this.getLabelPosition()
-    this.label = this.game.add.text(labelX, labelY, 'Score')
+    this.label = this.game.add.text(labelX, labelY, 'Time')
     this.label.font = 'Press Start 2P'
     this.label.fontSize = 24
     this.label.fill = '#cc4c28'
     this.label.fixedToCamera = true
 
-    const [scoreX, scoreY] = this.getScorePosition()
-    this.scoretext = this.game.add.text(scoreX, scoreY, '0')
-    this.scoretext.font = 'Press Start 2P'
-    this.scoretext.fontSize = 24
-    this.scoretext.fill = '#343537'
-    this.scoretext.fixedToCamera = true
+    const [timeX, timeY] = this.getTimePosition()
+    this.timetext = this.game.add.text(timeX, timeY, '0')
+    this.timetext.font = 'Press Start 2P'
+    this.timetext.fontSize = 24
+    this.timetext.fill = '#343537'
+    this.timetext.fixedToCamera = true
   }
 
   getLabelPosition () {
-    return [this.game.width - (this.characterWidth * this.digitNumber) - this.rightOffset - 140, this.topOffset]
+    return [this.game.width - (this.characterWidth * this.textualElapsedTime.length) - this.rightOffset - 140, this.topOffset]
   }
 
-  getScorePosition () {
-    return [this.game.width - (this.characterWidth * this.digitNumber) - this.rightOffset, this.topOffset]
-  }
-
-  add (points) {
-    this.score += points
+  getTimePosition () {
+    return [this.game.width - (this.characterWidth * this.textualElapsedTime.length) - this.rightOffset, this.topOffset]
   }
 
   get () {
-    return this.score
+    return this.elapsedTime
   }
 
   redraw () {
-    if (this.label && this.scoretext) {
+    if (this.label && this.timetext) {
       const [labelX, labelY] = this.getLabelPosition()
       this.label.cameraOffset.x = labelX
       this.label.cameraOffset.y = labelY
 
-      const [scoreX, scoreY] = this.getScorePosition()
-      this.scoretext.cameraOffset.x = scoreX
-      this.scoretext.cameraOffset.y = scoreY
+      const [timeX, timeY] = this.getTimePosition()
+      this.timetext.cameraOffset.x = timeX
+      this.timetext.cameraOffset.y = timeY
     }
   }
 
   remove () {
     if (this.label) this.label.kill()
-    if (this.scoretext) this.scoretext.kill()
+    if (this.timetext) this.timetext.kill()
   }
 
   hide () {
@@ -71,19 +70,48 @@ export default class {
   }
 
   /**
-     * Left pad with zeros
-     * @param score
+     * Transform timestamp into human-readable format
+     * @param time
      * @returns {string}
      */
-  pad (score) {
-    let zeros = '' + Math.pow(10, this.digitNumber)
-    return (zeros + score).substr(-this.digitNumber)
+  format (time) {
+    let tempTime = time;
+    let milliseconds = tempTime % 1000;
+    tempTime = Math.floor(tempTime / 1000);
+    let seconds = tempTime % 60;
+    tempTime = Math.floor(tempTime / 60);
+    let minutes = tempTime % 60;
+    // tempTime = Math.floor(tempTime / 60);
+    // let hours = tempTime % 60;
+
+    return ('' + minutes).padStart(2, '0')
+        + ":"
+        + ('' + seconds).padStart(2, '0')
+        + "."
+        + ('' + milliseconds).substring(0, 3).padStart(3, '0');
+  }
+
+  start() {
+    this.startTime = Date.now()
+    this.isStarted = true
+  }
+
+  stop() {
+    this.isStarted = false
+  }
+
+  updateTime() {
+    if( this.isStarted ){
+      this.elapsedTime = Date.now() - this.startTime
+    }
   }
 
   update () {
     if (this.isHidden === false) {
-      this.scoretext.setText(this.pad(this.score))
-      this.scoretext.parent.bringToTop(this.scoretext)
+      this.updateTime()
+      this.textualElapsedTime = this.format(this.elapsedTime)
+      this.timetext.setText(this.textualElapsedTime)
+      this.timetext.parent.bringToTop(this.timetext)
     }
   }
 }

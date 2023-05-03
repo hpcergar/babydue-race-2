@@ -1,7 +1,7 @@
 import CryptoJS from 'crypto-js'
-import crypto from 'crypto'
+import { createHmac } from 'crypto'
 
-const saltScore = '2D23PsgZdDLMu332'
+const saltTime = '75POPsgZdDLMu332'
 
 export default class {
   /**
@@ -48,14 +48,13 @@ export default class {
   }
 
   /**
-     * For score signature
-     * @param score
+     * For time signature
+     * @param time
      * @returns {*}
      */
-  signScore (score) {
-    return crypto
-      .createHmac('sha256', saltScore)
-      .update(score + '') // As string
+  signTime (time) {
+    return createHmac('sha256', saltTime)
+      .update(time + '') // As string
       .digest('hex')
   }
 

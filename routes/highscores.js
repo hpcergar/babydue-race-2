@@ -7,10 +7,8 @@ var express = require('express'),
     usersController = require('../controller/users'),
     _ = require('lodash'),
     cryptoService = require('../service/crypto'),
-    salt = require('../config/config').saltScore
+    salt = require('../config/config').saltTime
     ;
-
-
 
 /**
  * Handle insertion/update
@@ -22,13 +20,12 @@ var express = require('express'),
 function handleUpsert(request, response, errorCode){
 
     let email = request.query.emailOrig || request.query.email;
-    // Decode score
-    let scoreSignature = request.query.score;
+    // Decode time
+    let actualTimeSignature = request.query.time;
+    let expectedTimeSignature = cryptoService.crypt(request.body.time.toString(), salt)
 
-    let scoreComputed = cryptoService.crypt(request.body.score.toString(), salt)
-
-    if (scoreComputed !== scoreSignature) {
-        let errorMessage = 'Wrong score sent ' + request.body.score
+    if (expectedTimeSignature !== actualTimeSignature) {
+        let errorMessage = 'Wrong time sent ' + request.body.time
         console.log(errorMessage);
         response
             .status(400)
@@ -37,14 +34,11 @@ function handleUpsert(request, response, errorCode){
     }
 
     let user = users.getUserByEmail(email)
-
-    user.lastScore = request.body.score;
-    user.score = !user.score || user.score < user.lastScore ? user.lastScore : user.score
+    user.lastTime = request.body.time;
+    user.time = !user.time || user.time > user.lastTime ? user.lastTime : user.time
     user.email = email;
 
-
-
-    usersController.save(user, email, scoreSignature, function(error){
+    usersController.save(user, email, function(error){
         if(error){
             console.log(error.message);
             response
@@ -59,7 +53,6 @@ function handleUpsert(request, response, errorCode){
     });
 }
 
-
 router.route('/')
     .get(function (request, response) {
         // Get an array
@@ -69,11 +62,11 @@ router.route('/')
             .value();
 
         usersFiltered = usersFiltered
-            .filter(user => user.score !== undefined) // Take those having score
-            .map(({ name, score }) => ({ name, score })); // Take only name, email, score
-        // Take first 10, sorted by score desc
-        let highscores = _.slice(_.orderBy(usersFiltered, ['score'], ['desc']), 0, 10);
-        response.json(highscores);
+            .filter(user => user.time !== undefined && user.time > 0) // Take those having time
+            .map(({ name, time }) => ({ name, time })); // Take only name, time
+        // Take first 10, sorted by time asc
+        let top10 = _.slice(_.orderBy(usersFiltered, ['time'], ['asc']), 0, 10);
+        response.json(top10);
     })
 ;
 
@@ -82,14 +75,12 @@ router.route('/:email')
         let email = request.query.emailOrig || request.query.email;
         let user = users.getUserByEmail(email)
         response.json(user
-            ? { "name" : user.name, "score" : user.score || null}
+            ? { "name" : user.name, "time" : user.time || null}
             : false);
     })
     .put(jsonencoded, function (request, response) {
         handleUpsert(request, response, 400);
     })
 ;
-
-
 
 module.exports = router;

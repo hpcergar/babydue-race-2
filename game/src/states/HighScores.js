@@ -89,7 +89,7 @@ export default class extends Phaser.State {
     let topListOffset = 90 * this.heightScale
     let text = ''
     _.each(toplist, _.bind((item, index) => {
-      let value = (index + 1) + '. ' + this.scoreService.pad(item.score) + '\t' + item.name + '  '
+      let value = (index + 1) + '. ' + this.scoreService.format(item.time) + '\t' + item.name + '  '
       text += '\n' + value
     }))
 

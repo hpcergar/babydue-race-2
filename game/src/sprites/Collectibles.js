@@ -4,11 +4,10 @@ const POINTS_STAR = 10
 const COLLECTIBLE_GROUP = 'collectibles'
 
 export default class {
-  constructor (game, map, score) {
+  constructor (game, map) {
     // Starts
     this.game = game
     this.map = map
-    this.score = score
     this.coins = {}
     this.stars = {}
 
@@ -45,9 +44,6 @@ export default class {
   collect (player, collectible) {
     let points = collectible.attr.points
     collectible.kill()
-
-    // Add points to score
-    this.score.add(points)
   }
 
   update (player) {

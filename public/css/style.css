@@ -372,9 +372,7 @@ footer {
     -moz-osx-font-smoothing: grayscale;
 }
 .icon-fire::before {
-    /*content: "";*/
-    content: "\e900";
-    /*color: rgb(0, 0, 0);*/
+    content: "\e909";
 }
 
 

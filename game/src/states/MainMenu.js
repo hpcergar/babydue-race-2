@@ -26,7 +26,7 @@ export default class extends Phaser.State {
     this.fontScale = 1
 
     this.highscoresService = new HighscoresService()
-    let canVote = !!this.highscoresService.getUserScore()
+    let canVote = !!this.highscoresService.getUserTime()
 
     this.header = new Header(this.game, this.world)
     // this.footer = new Footer(this.game, this.world)

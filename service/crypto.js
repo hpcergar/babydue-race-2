@@ -2,7 +2,6 @@
 
 let crypto = require('crypto')
 
-
 exports.crypt = function(text, salt){
     let hash = crypto
         .createHmac('sha256', salt)

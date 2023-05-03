@@ -48,7 +48,7 @@ This means it has its own webpack and dev flow. Here I will be describing how I 
 $ npm install && cd game/ && npm install
 ```
 
-* Copy ```config/sandbox/config.js``` file to  with ```config/config.js```. Modify it by inserting your own `salt` and `saltScore`. 
+* Copy ```config/sandbox/config.js``` file to  with ```config/config.js```. Modify it by inserting your own `salt` and `saltTime`. 
 * Create ```data/users.json``` file with ```data/users.example.json``` if it does not exist
 * Same goes for ```data/bets.json```
 * In ```data/users.json```, you can pick one of the example emails of add your own.
@@ -122,16 +122,16 @@ Params:
 
 ## /highscores
 ### GET /highscores/
-Retrieve a list of top 10 scores, with emails
+Retrieve a list of top 10 best times, with emails
 
 ### GET /highscores/:email
-Retrieve best score for given email
+Retrieve best time for given email
 
 ### PUT /highscores/:email
-Update user's best score with given parameter (only if better than current)
+Update user's best time with given parameter (only if better than current)
 Params:
 - email (aaa@bbb.com)
-- score (100)
+- time (100)
 - scoreSignature
 
 
@@ -143,7 +143,7 @@ Validate current user's credentials
 ## /users
 ### GET /users/
 Retrieve a list of users data models indexed by email 
-with name, language, lastScore, (best) score.
+with name, language, lastTime, (best) time.
 
 ### GET /users/:email
 Retrieve user data model for a single email

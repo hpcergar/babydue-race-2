@@ -110,7 +110,7 @@ exports.isValidUser = function(email){
  */
 exports.hasAlreadyPlayed = function(email){
     let user = this.getUserByEmail(email)
-    return (false !== user && user.score);
+    return (false !== user && user.time);
 };
 
 

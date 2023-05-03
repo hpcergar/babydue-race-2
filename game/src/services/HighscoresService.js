@@ -8,18 +8,18 @@ export default class {
 
   /**
      *
-     * @param score
+     * @param time
      * @returns {boolean}
      */
-  saveScore (score) {
+  saveTime (time) {
     let result = false
 
     // Login to server, if not then go to failed auth
     $.ajax({
       url: '/highscores/' + this.authService.getEmail() + '?email=' + this.authService.getEmail() +
             '&signature=' + this.authService.getSignature() +
-            '&score=' + this.authService.signScore(score),
-      data: JSON.stringify({score: score}),
+            '&time=' + this.authService.signTime(time),
+      data: JSON.stringify({time: time}),
       type: 'PUT',
       contentType: 'application/json',
       headers: this.authService.generateAuthHeader(),
@@ -60,12 +60,12 @@ export default class {
   }
 
   /**
-     * Retrieve user stored score
+     * Retrieve user stored time
      * @returns {number}
      */
-  getUserScore () {
+  getUserTime () {
     // Login to server, if not then go to failed auth
-    let user = {score: 0}
+    let user = {time: 0}
 
     $.ajax({
       url: '/users/' + this.authService.getEmail() + '?email=' + this.authService.getEmail() + '&signature=' + this.authService.getSignature(),
@@ -80,17 +80,17 @@ export default class {
       async: false
     })
 
-    return user.score
+    return user.time
   }
 
   /**
-     * Returns score position if among top 10. Return 10 if outside (not in top10)
-     * @param score
+     * Returns player's position if among top 10
+     * @param time
      * @returns {number}
      */
-  getScorePosition (score) {
+  getUserPositionInTop10 (time) {
     let top10 = this.getTop10()
-    let position = top10.filter(user => user.score > score).length + 1
+    let position = top10.filter(user => user.time < time).length + 1
 
     return position > 10 ? false : position
   }
