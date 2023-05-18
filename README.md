@@ -82,13 +82,13 @@ There is a single command that build for production & also sends to a remote ser
 $ npm run deploy
 ```
 
-Aforehand you should have defined the following env variables:
+Beforehand you should have defined the following env variables:
 ```bash
-BABYDUE_RACE_HOST=Your server host to ssh to it
-BABYDUE_RACE_LOGIN=Server ssh login
-BABYDUE_RACE_PASSWORD=Server ssh password
+BABYDUE_RACE_2_HOST=Your server host to ssh to it
+BABYDUE_RACE_2_LOGIN=Server ssh login
 ```
 Don't forget to change server path in file to suit your needs.
+Also, you need a SSH key to login to server.
 
 After ssh to it, this scripts is going to send a tar.gz, untar it,
 and execute some commands on the remote server to prepare data, config & logs.
