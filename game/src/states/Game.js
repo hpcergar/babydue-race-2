@@ -12,6 +12,7 @@ import Overlay from '../sprites/Overlay'
 import HighscoresService from '../services/HighscoresService'
 import TextPanel from '../services/TextPanel'
 import Scale from '../services/Scale'
+import ScoreService from '../services/Score'
 
 // import DebugArcadePhysics from 'DebugArcadePhysics'
 
@@ -27,6 +28,7 @@ export default class extends Phaser.State {
     this.layers = []
 
     this.game.plugins.add(Phaser.Plugin.ArcadeSlopes)
+    this.scoreService = new ScoreService()
 
     // debug
     // this.game.plugins.add(Phaser.Plugin.DebugArcadePhysics);
@@ -63,7 +65,7 @@ export default class extends Phaser.State {
 
     // STATE
     // Keep these false on production
-    this.debug = true // TODO Undo
+    this.debug = true
     this.debugFps = false
 
     if (this.debug || this.debugFps) {
@@ -341,7 +343,7 @@ export default class extends Phaser.State {
      * @returns {*[]}
      */
   getEndText (time, position, bestTime) {
-    let text = this.game.translate('Congratulations').replace(':time', time),
+    let text = this.game.translate('Congratulations').replace(':time', this.scoreService.format(time)),
       isBestTime = (bestTime && time <= bestTime) || !bestTime
 
     if (position !== false && isBestTime) {
@@ -349,7 +351,7 @@ export default class extends Phaser.State {
     }
 
     if (!isBestTime && bestTime) {
-      text = text.concat('\n\n' + this.game.translate('Your best time is').replace(':time', bestTime))
+      text = text.concat('\n\n' + this.game.translate('Your best time is').replace(':time', this.scoreService.format(bestTime)))
     }
 
     return [text] // As single page, you could add multiple for each displayed page

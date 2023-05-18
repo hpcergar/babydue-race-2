@@ -38,6 +38,7 @@
   },
   "scripts": {
     "dev": "webpack",
+    "dev-backend": "webpack --config webpack.dev-with-backend.config.js",
     "build": "webpack --config webpack.production.config.js",
     "test": "eslint './src/**/*.js'"
   }

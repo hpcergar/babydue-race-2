@@ -1,4 +1,3 @@
-import Config from '../config'
 import AuthService from './AuthService'
 
 export default class {
