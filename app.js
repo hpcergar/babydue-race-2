@@ -3,13 +3,12 @@ var express = require('express'),
     login = require('./routes/login'),
     bets = require('./routes/bets'),
     users = require('./routes/users'), 
-    highscores = require('./routes/highscores'),
-    winner = require('./routes/winner')
+    highscores = require('./routes/highscores')
     ;
 
 var Main = function(){
 
-    var self = this;
+    const self = this;
 
     self.setupVariables = function(){
         //  Set the environment variables we need.
@@ -42,11 +41,6 @@ var Main = function(){
         self.app.use('/calendar/remodal', express.static(__dirname + '/node_modules/remodal/dist'));
 
         // Add security layer
-        // TODO switch back
-        // self.app.use('/winner', security);
-        self.app.use('/winner', winner);
-        
-        // Add security layer
         self.app.use('/users', security);
         self.app.use('/users', users);
         
@@ -72,6 +66,6 @@ var Main = function(){
 
 
 
-var App = new Main();
+const App = new Main();
 App.start();
 module.exports=App;

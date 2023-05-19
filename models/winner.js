@@ -1,10 +1,7 @@
 'use strict';
 
-var
-    winner = require('../data/winner.json'),
-    bets = require('./bets'),
-    users = require('./users')
-    ;
+
+//var winner = require('../data/winner.json');
 
 
 /**
