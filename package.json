@@ -37,7 +37,7 @@
     "remodal": "^1.0.7",
     "simple-node-logger": "^0.93.12",
     "validator": "^4.9.0",
-    "winston": "^2.2.0"
+    "winston": "^3.8.0"
   },
   "devDependencies": {
     "babel": "^6.5.2",

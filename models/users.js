@@ -4,21 +4,7 @@ var path = require('path'),
     file = path.join(__dirname, '..', 'data', 'users.json'),
     dataCached,
     _ = require('lodash'),
-    moment = require('moment'),
-    winston = require('winston'),
-    logger = new (winston.Logger)({
-        transports: [
-            new (winston.transports.File)({
-                filename: path.join(__dirname, '..', 'data', 'log'),
-                json: false,
-                formatter: function(options) {
-                    // Return string will be passed to logger.
-                    return '[' + moment().format('YYYYMMDD HH:mm:ss') + '] ' + (undefined !== options.message ? options.message : '') +
-                        (options.meta && Object.keys(options.meta).length ? '\n\t'+ JSON.stringify(options.meta) : '' );
-                }
-            })
-        ]
-    }),
+    logger = require('../service/logger').logger(),
     users = require('../data/users.json'),
     storageAdapter = require('../storage/adapter')
 ;

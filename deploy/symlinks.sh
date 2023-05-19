@@ -18,6 +18,7 @@ dataDir=$1/data
 echo "dataDir is ${dataDir}"
 
 echo "Adding symlinks to json data";
+mkdir -p ${dataDir}
 mkdir -p data
 ln -sf ${dataDir}/bets.json ./data/bets.json
 ln -sf ${dataDir}/users.json ./data/users.json

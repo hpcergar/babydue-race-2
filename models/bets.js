@@ -1,27 +1,8 @@
 'use strict';
 
-var fs = require('fs'),
-    path = require('path'),
+var path = require('path'),
     file = path.join(__dirname, '..', 'data', 'bets.json'),
-    opts = {
-        logFilePath:path.join(__dirname, '..', 'data', 'log'),
-        timestampFormat:'YYYY-MM-DD HH:mm:ss'
-    },
-    moment = require('moment'),
-    winston = require('winston'),
-    logger = new (winston.Logger)({
-        transports: [
-            new (winston.transports.File)({
-                filename: path.join(__dirname, '..', 'data', 'log'),
-                json: false,
-                formatter: function(options) {
-                    // Return string will be passed to logger.
-                    return '[' + moment().format('YYYYMMDD HH:mm:ss') + '] ' + (undefined !== options.message ? options.message : '') +
-                        (options.meta && Object.keys(options.meta).length ? '\n\t'+ JSON.stringify(options.meta) : '' );
-                }
-            })
-        ]
-    }),
+    logger = require('../service/logger').logger(),
     storageAdapter = require('../storage/adapter'),
     users = require('../data/users.json'),
     dataCached,
@@ -104,13 +85,13 @@ function getBets(callback){
  * @returns {{}}
  */
 function mapByEmail(data){
-    var map = {};
+    let map = {};
 
     // Loop over dates
-    for (var date in data) {
+    for (const date in data) {
         if (data.hasOwnProperty(date)){
             // Loop over possible genders
-            for (var gender in data[date]) {
+            for (const gender in data[date]) {
                 if (data[date].hasOwnProperty(gender)){
                     // Set a list of emails-based key with selected date and gender
                     map[data[date][gender]] = {date : date, gender : gender}
@@ -136,26 +117,26 @@ function getGenders(){
  * @param data
  */
 function saveBet(data){
-    var bets = dataCached.bets;
+    let bets = dataCached.bets;
     if(!bets[data.date]){
         bets[data.date] = {}
     }
 
     // Sort result
-    var choices = ['m', 'f', 'd'],
+    let choices = ['m', 'f', 'd'],
         currentDateBets = bets[data.date]
         ;
 
     currentDateBets[data.gender] = data.email;
     bets[data.date] = {};
-    for(var i = 0; i < choices.length; i++){
+    for(let i = 0; i < choices.length; i++){
         if(currentDateBets[choices[i]]){
             bets[data.date][choices[i]] = currentDateBets[choices[i]];
         }
     }
 
     // Log
-    var name = (users[data.email] ? users[data.email]["name"] : data.email);
+    let name = (users[data.email] ? users[data.email]["name"] : data.email);
     logger.info(name + ' bet on ' + data.date + ' for a [' + data.gender + ']');
 
     dataCached.bets = bets;
@@ -168,7 +149,7 @@ function saveBet(data){
  * @param data
  */
 function deleteBet(data){
-    var bets = dataCached.bets;
+    let bets = dataCached.bets;
     if(data && bets[data.date]){
         delete bets[data.date][data.gender];
         console.log('Bet removed from cached data');
@@ -207,11 +188,11 @@ function deleteByEmail(email, callback){
 function findByEmail(email, callback){
     // Map bets by email
     getBets(function(err, data){
-        var map = mapByEmail(data),
+        let map = mapByEmail(data),
             returnedData
             ;
 
-        if(err){
+        if (err){
             callback(err);
             return;
         }
@@ -249,7 +230,7 @@ exports.getAll = getBets;
  * @returns {boolean}
  */
 exports.isValidGender = function(gender){
-    return (getGenders().indexOf(gender) != -1);
+    return getGenders().indexOf(gender) !== -1;
 };
 
 /**
@@ -262,7 +243,7 @@ exports.isValidGender = function(gender){
  */
 exports.isBetAvailable = function(bet, callback){
     getBets(function(err, data){
-        if(data[bet.date] && data[bet.date][bet.gender] && data[bet.date][bet.gender] != bet.email){
+        if(data[bet.date] && data[bet.date][bet.gender] && data[bet.date][bet.gender] !== bet.email){
             callback( new Error('Date already taken by ' + data[bet.date][bet.gender]) );
             return;
         }
