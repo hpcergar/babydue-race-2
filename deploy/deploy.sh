@@ -22,7 +22,7 @@ if [ ! -f $nameZip ]
 
     # Copy to dist
     echo "Copying node & /public to ${baseDir}/${dirName}"
-    rsync -av --progress ${baseDir}/ ${baseDir}/${dirName}/ --exclude game --exclude node_modules --exclude .idea --exclude data --exclude dist --exclude .git --exclude deploy/deploy.sh --exclude config/config.js --exclude assets
+    rsync -av --progress ${baseDir}/ ${baseDir}/${dirName}/ --exclude game --exclude node_modules --exclude .idea --exclude data --exclude dist --exclude .git --exclude deploy/deploy.sh --exclude config/config.js
 
     mkdir -p ${baseDir}/${dirName}/game
 
@@ -56,12 +56,12 @@ ssh -i ${BABYDUE_RACE_2_SSH_KEY} ${BABYDUE_RACE_2_LOGIN}@${BABYDUE_RACE_2_HOST} 
 #   $ iptables -nL|grep "22\|ssh"
 # We install dependencies in this step, because we excluded in the rsync. It was too slow in WSL2 (my current dev platform)
 ssh -i ${BABYDUE_RACE_2_SSH_KEY} ${BABYDUE_RACE_2_LOGIN}@${BABYDUE_RACE_2_HOST} "
+  echo 'Changing owner'
+  chown nodejs -R ${remoteDirVersions}/${name}
   echo 'Installing dependencies'
   runuser -l nodejs -c 'cd ${remoteDirVersions}/${name} && npm install'
   echo 'Setting up symlinks'
   cd ${remoteDirVersions}/${name} && sh deploy/symlinks.sh ${remoteRoot}
-  echo 'Changing owner'
-  chown nodejs -R ${remoteDirVersions}/${name}
   echo 'Updating latest current symlink'
   cd ${remoteRoot}/www && ln -sfn ${remoteDirVersions}/${name} current
   echo 'Restarting app'
