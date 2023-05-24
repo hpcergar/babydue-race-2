@@ -41,7 +41,7 @@ export class Julen extends Character {
         // Set gravity center in the middle
         this.sprite.anchor.x = 0.2
         this.sprite.anchor.y = 0.25
-        this.sprite.body.setSize(36, 55, 0, -2)
+        this.sprite.body.setSize(20, 55, 10, -2)
         this.enablePhysics()
     }
 

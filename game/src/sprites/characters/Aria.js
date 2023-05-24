@@ -39,13 +39,7 @@ export class Aria extends Character {
         // Set gravity center in the middle
         this.sprite.anchor.x = 0.2
         this.sprite.anchor.y = 0.25
-        this.sprite.body.setSize(36, 55, 0, 0)
-        this.sprite.body.setSize(
-            32 / Math.abs(this.sprite.scale.x),
-            32 / Math.abs(this.sprite.scale.y),
-            0,
-            23
-        )
+        this.sprite.body.setSize(20, 55, 10, 0)
         this.enablePhysics()
     }
 
