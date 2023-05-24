@@ -5,6 +5,7 @@ import config from '../config'
 import Prefab from '../models/Prefab'
 
 const TYPE_SPRITESHEET = 'spritesheet'
+const TYPE_SPRITESHEET_ATLAS_JSON = 'spritesheet-atlas-json'
 const TYPE_IMAGE = 'image'
 const TYPE_IMAGE_COLLECTION = 'image-collection'
 const TYPE_TILEMAP = 'tilemap'
@@ -27,11 +28,13 @@ export default class {
     // Create each asset difned
     Object.entries(config.assets.list).forEach(([key, value]) => {
       let source = typeof value.source === 'string' ? this.source(value.source, assetScale, prefixes, value.type) : null
+      let map = typeof value.map === 'string' ? this.source(value.map, assetScale, prefixes, value.type) : null
 
       // let prefab =
       this.prefabs[key] = this.factory(value.type, {
         key,
         source,
+        map,
         width: value.width || undefined,
         height: value.height || undefined
       })
@@ -73,6 +76,9 @@ export default class {
         break
       case TYPE_SPRITESHEET:
         entity = this.factorySpritesheet(options.key, options.source, options.width, options.height)
+        break
+      case TYPE_SPRITESHEET_ATLAS_JSON:
+        entity = this.factorySpritesheetAtlasJson(options.key, options.source, options.map)
         break
       case TYPE_IMAGE:
         entity = this.factoryImage(options.key, options.source)
@@ -152,6 +158,17 @@ export default class {
      */
   factorySpritesheet (name, source, width, height) {
     return this.game.load.spritesheet(name, source, width, height)
+  }
+
+  /**
+     *
+     * @param name
+     * @param source
+     * @param map
+     * @returns {*}
+     */
+  factorySpritesheetAtlasJson (name, source, map) {
+    return this.game.load.atlas(name, source, map);
   }
 
   /**

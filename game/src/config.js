@@ -36,6 +36,7 @@ export default {
     prefixes: {
       main: 'assets/',
       spritesheet: 'sprites/',
+      'spritesheet-atlas-json': 'sprites/',
       tilemap: 'tilemaps/',
       'tilemap-json': 'tilemaps/'
     },
@@ -46,17 +47,10 @@ export default {
         // source: ':scale/autumn/autumn.json' // TODO Clean up folder?
         source: ':scale/summer/summer.json'
       },
-      playerAria: {
-        type: 'spritesheet',
-        source: 'aria.png',
-        width: 64,
-        height: 64
-      },
-      playerJulen: {
-        type: 'spritesheet',
-        source: 'julen.png',
-        width: 64,
-        height: 64
+      players: {
+        type: 'spritesheet-atlas-json',
+        source: 'spritesheet-optimized.png',
+        map: 'sprites-optimized-json-tp-array.json'
       },
       'black-pixel': {
         type: 'spritesheet',

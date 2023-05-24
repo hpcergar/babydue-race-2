@@ -4,7 +4,7 @@ export default class {
   constructor (game, map) {
     this.game = game
     this.game.stage.backgroundColor = '#db4e16'
-    this.backgroundTilesprite = this.game.add.sprite(0, -200, 'background')
+    this.backgroundTilesprite = this.game.add.sprite(0, -100, 'background')
     this.backgroundTilesprite.width = 1350
     this.backgroundTilesprite.height = 900
 

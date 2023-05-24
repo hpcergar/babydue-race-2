@@ -11,12 +11,14 @@ var p2 = path.join(phaserModule, 'build/custom/p2.js')
 var phaserSlopes = path.join(__dirname, '/node_modules/phaser-arcade-slopes/dist/phaser-arcade-slopes.js')
 var debugArcade = path.join(__dirname, '/node_modules/phaser-plugin-debug-arcade-physics/dist/DebugArcadePhysics.js')
 var SAT = path.join(__dirname, '/node_modules/sat/SAT.js')
+const SpeedMeasurePlugin = require("speed-measure-webpack-plugin");
+const smp = new SpeedMeasurePlugin();
 
 var definePlugin = new webpack.DefinePlugin({
     __DEV__: JSON.stringify(JSON.parse(process.env.BUILD_DEV || 'true'))
 })
 
-module.exports = {
+module.exports = smp.wrap({
     mode: "development",
     entry: {
         app: [
@@ -25,7 +27,8 @@ module.exports = {
         ],
         vendor: ['pixi', 'p2', 'phaser', 'webfontloader', 'SAT']
     },
-    devtool: 'cheap-source-map',
+    // devtool: 'cheap-source-map',
+    devtool: false,
     output: {
         pathinfo: true,
         path: path.resolve(__dirname, 'dist'),
@@ -35,7 +38,8 @@ module.exports = {
     },
     watch: true,
     watchOptions: {
-        poll: 1500
+        poll: 1500,
+        ignored: /node_modules/,
     },
     optimization: {
         splitChunks: {
@@ -188,4 +192,4 @@ module.exports = {
             crypto: false
         }
     }
-}
+})

@@ -33,7 +33,8 @@ module.exports = {
     },
     watch: true,
     watchOptions: {
-        poll: 1500
+        poll: 1500,
+        ignored: /node_modules/,
     },
     optimization: {
         splitChunks: {

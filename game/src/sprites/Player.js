@@ -46,7 +46,7 @@ export default class {
         // this.game.debug.reset();
 
         // ANIMATIONS
-        this.getSprite().animations.play(Constants.animations.ANIMATION_STANDING)
+        this.getSprite().animations.play(Constants.animations.ANIMATION_IDLE)
         this.lookingRight = true
 
         // CONTROLS
@@ -75,7 +75,7 @@ export default class {
         character.setActive();
         this.player = character
 
-        this.getSprite().animations.play(Constants.animations.ANIMATION_STANDING)
+        this.getSprite().animations.play(Constants.animations.ANIMATION_IDLE)
         // Make the camera follow the sprite
         this.game.camera.follow(this.getSprite())
     }
@@ -129,7 +129,6 @@ export default class {
             this.velocity = 1.5 * Constants.mechanics.GAME_VELOCITY
         }
 
-        let wasStanding = this.getSprite().body.velocity.x === 0
         let isHittingGround = this.player.isHittingGround(hitting)
 
         // For debug
@@ -147,33 +146,17 @@ export default class {
                 : 0
         }
 
-        // Rotation, acceleration, etc.
-        this.adaptOnSlope(this.getSprite().slopeId)
-
         let slopeUpFactor = this.slopeUpFactor(this.getSprite().slopeId, this.getSprite().body.velocity.y)
         if (this.isPlayable /*&& this.debug === false*/) {
             this.getSprite().body.velocity.x = this.velocity - slopeUpFactor
         }
 
-        // If on the ground, allow jump or mechanic: jump
         if (isHittingGround) {
+            // If on the ground, allow jump or mechanic: jump
             if (this.isInputPressed()) {
                 this.switchCharacters()
             }
-            this.player.update(this.getGameStateForPlayer())
-
-            /*
-                if (this.debug && this.input.isSpacebarDown()) {
-                    // Jump
-                    let velocityY = Constants.mechanics.JUMP
-                    if (this.inclination === Constants.slopes.SLOPE_ASCENDING) {
-                        velocityY = Constants.mechanics.JUMP - 100
-                    } else if (this.inclination === Constants.slopes.SLOPE_DESCENDING) {
-                        velocityY = Constants.mechanics.JUMP + 550
-                    }
-                    this.getSprite().body.velocity.y = velocityY
-                }
-            */
+            this.player.update(this.getGameStateForPlayer(isHittingGround))
         }
 
 
@@ -191,18 +174,12 @@ export default class {
         //     }
         //     this.getSprite().body.velocity.x = this.velocity - slopeUpFactor
         // }
-
-        // Animations
-        if (wasStanding && this.getSprite().body.velocity.x !== 0) {
-            this.getSprite().animations.play(Constants.animations.ANIMATION_RUNNING)
-        } else if (!wasStanding && this.getSprite().body.velocity.x === 0) {
-            this.getSprite().animations.play(Constants.animations.ANIMATION_STANDING)
-        }
     }
 
-    getGameStateForPlayer() {
+    getGameStateForPlayer(isHittingGround) {
         return {
-            velocity: this.velocity
+            velocity: this.velocity,
+            isHittingGround
         }
     }
 

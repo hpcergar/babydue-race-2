@@ -4,8 +4,11 @@ const JUMP = -650
 
 export default {
     animations: {
-        ANIMATION_STANDING: 'standing',
+        ANIMATION_IDLE: 'idle',
         ANIMATION_RUNNING: 'running',
+        ANIMATION_JUMPING: 'jumping',
+        ANIMATION_DASH: 'dash',
+        ANIMATION_ATTACK: 'attack',
     },
     characters: {
         CHARACTER_ARIA: 'playerAria',

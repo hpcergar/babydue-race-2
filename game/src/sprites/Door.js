@@ -1,6 +1,6 @@
 import Points from '../services/Points'
 
-const ANIMATION_STANDING = 'standing'
+const ANIMATION_IDLE = 'idle'
 const ANIMATION_OPENING = 'opening'
 const ANIMATION_OPEN = 'open'
 
@@ -17,7 +17,7 @@ export default class {
     this.object = this.game.add.sprite(doorX, doorY - 93, 'door')
 
     // Define animations
-    this.object.animations.add(ANIMATION_STANDING, [0], 5, false)
+    this.object.animations.add(ANIMATION_IDLE, [0], 5, false)
     this.object.animations.add(ANIMATION_OPENING, [0, 1, 2, 3, 4, 5, 6, 7], 5, false)
     this.object.animations.add(ANIMATION_OPEN, [7], 5, false)
 

@@ -6,6 +6,15 @@ export default class {
     game.input.gamepad.start();
   }
 
+  justDown () {
+    return this.game.input.activePointer.justDown
+        || this.game.input.gamepad.pad1.justDown(Phaser.Gamepad.XBOX360_A)
+        || this.game.input.gamepad.pad1.justDown(Phaser.Gamepad.XBOX360_B)
+        || this.game.input.keyboard.addKey(Phaser.Keyboard.UP).justDown
+        || this.game.input.keyboard.addKey(Phaser.Keyboard.ENTER).justDown
+        || (this.debug == null && this.game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR).justDown)
+  }
+
   isDown () {
     return this.game.input.activePointer.isDown
         || this.game.input.gamepad.pad1.isDown(Phaser.Gamepad.XBOX360_A)
