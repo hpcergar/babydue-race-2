@@ -5,7 +5,7 @@ import TilemapProvider from '../providers/Tilemap'
 import DecorationProvider from '../providers/Decoration'
 import Background from '../sprites/Background'
 import Score from '../services/Score'
-import Collectibles from '../sprites/Collectibles'
+import Rocks from '../sprites/Rocks'
 import Player from '../sprites/Player'
 import Door from '../sprites/Door'
 import Overlay from '../sprites/Overlay'
@@ -102,11 +102,9 @@ export default class extends Phaser.State {
 
     // Mechanics (slow-down, jump)
     new DecorationProvider(this.map, 'Mechanics', this.layers[MECHANICS_LAYER])
-
+    // Rocks animation
+    this.rocks = new Rocks(this.game, this.map)
     this.door = new Door(this.game)
-
-    // Collectibles (coins, stars)
-    this.collectibles = new Collectibles(this.game, this.map)
 
     // Player (Aria)
     this.player = new Player(this.game, this.debug)
@@ -186,7 +184,7 @@ export default class extends Phaser.State {
     let hitGround = this.game.physics.arcade.collide(this.player.getSprite(), this.mainLayer, (player, ground) => this.player.setCollisionData(ground))
 
     if (!this.isEndAnimation) {
-      this.collectibles.update(this.player.getSprite())
+      this.rocks.update(this.player.getSprite())
       this.player.update(hitGround)
       this.score.update()
     } else if (this.textPanel && this.textPanel.update) {

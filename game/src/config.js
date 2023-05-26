@@ -52,6 +52,11 @@ export default {
         source: 'spritesheet-optimized.png',
         map: 'sprites-optimized-json-tp-array.json'
       },
+      'rock-explosion': {
+        type: 'spritesheet-atlas-json',
+        source: 'rock-spritesheet.png',
+        map: 'rock-spritesheet-optimized-json-tp-array.json'
+      },
       'black-pixel': {
         type: 'spritesheet',
         source: 'black-pixel.gif',

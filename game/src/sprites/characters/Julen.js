@@ -7,6 +7,7 @@ export class Julen extends Character {
         super(game, debug)
 
         this.sprite = game.add.sprite(startX, startY, 'players')
+        this.sprite.characterName = Constants.characters.CHARACTER_JULEN
         this.sprite.animations.add(
             Constants.animations.ANIMATION_IDLE,
             ['julen-idle'],
@@ -33,8 +34,18 @@ export class Julen extends Character {
         );
         this.sprite.animations.add(
             Constants.animations.ANIMATION_ATTACK,
-            Phaser.Animation.generateFrameNames('julen-attack-', 1, 6),
-            8,
+            [
+                'julen-attack-2',
+                'julen-attack-3',
+                'julen-attack-3',
+                'julen-attack-4',
+                'julen-attack-4',
+                'julen-attack-5',
+                'julen-attack-5',
+                'julen-attack-6',
+                'julen-attack-6',
+            ],
+            16,
             false
         );
         this.game.physics.arcade.enable(this.sprite)
@@ -54,13 +65,12 @@ export class Julen extends Character {
             return
         }
 
-        // TODO Interact with Rock
         // Mechanic: Rock
         if (this.getSprite().slopeId === Constants.slopes.SLOPE_TYPE_ROCK) {
             nextAnimation = Constants.animations.ANIMATION_ATTACK
+            this.game.camera.shake(0.01, 50, true, Phaser.Camera.SHAKE_HORIZONTAL, true)
         }
 
-        // TODO Refactor up
         let isIdle = this.getSprite().body.velocity.x === 0
         if (nextAnimation === null && !isIdle) {
             nextAnimation = Constants.animations.ANIMATION_RUNNING

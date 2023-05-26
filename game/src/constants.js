@@ -9,6 +9,7 @@ export default {
         ANIMATION_JUMPING: 'jumping',
         ANIMATION_DASH: 'dash',
         ANIMATION_ATTACK: 'attack',
+        ANIMATION_EXPLODE: 'explode',
     },
     characters: {
         CHARACTER_ARIA: 'playerAria',

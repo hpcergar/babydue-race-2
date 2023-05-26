@@ -5,6 +5,7 @@ export class Aria extends Character {
         super(game, debug)
 
         this.sprite = game.add.sprite(startX, startY, 'players')
+        this.sprite.characterName = Constants.characters.CHARACTER_ARIA
         this.sprite.animations.add(
             Constants.animations.ANIMATION_IDLE,
             ['aria-idle'],
