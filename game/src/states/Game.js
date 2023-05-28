@@ -146,7 +146,7 @@ export default class extends Phaser.State {
     this.game.forceSingleUpdate = false
   }
 
-  resize () {
+  resize(width, height) {
     this.onResize(this.game.scale, new Phaser.Rectangle(0, 0, this.game.width, this.game.height), true)
   }
 
@@ -156,7 +156,7 @@ export default class extends Phaser.State {
      * @param parentBounds
      * @param force
      */
-  onResize (scaleManager, parentBounds, force = false) {
+  onResize(scaleManager, parentBounds, force = false) {
     this.scaleService.resize(scaleManager, parentBounds, force, (width, height) => {
       console.log('scaled up (width, height)')
       let layersMap = this.tilemapProvider.getLayers()
@@ -168,7 +168,7 @@ export default class extends Phaser.State {
     })
   }
 
-  render () {
+  render(game) {
     // TODO Remove
     if (this.debug || this.debugFps) {
       this.game.debug.text('FPS: ' + this.game.time.fps || 'FPS: --', 40, 40, '#00ff00')
@@ -180,7 +180,7 @@ export default class extends Phaser.State {
     }
   }
 
-  update () {
+  update(game) {
     let hitGround = this.game.physics.arcade.collide(this.player.getSprite(), this.mainLayer, (player, ground) => this.player.setCollisionData(ground))
 
     if (!this.isEndAnimation) {

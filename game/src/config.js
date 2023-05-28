@@ -1,9 +1,5 @@
 export default {
   resolutions: [
-    // {
-    //     width: 960,
-    //     height: 640,
-    // },
     {
       width: 1350,
       height: 900
@@ -28,7 +24,12 @@ export default {
     title: {font: 'Bangers'},
     text: {font: 'Press Start 2P', size: 14}
   },
-
+  ui: {
+    inactive_item_fill: '#5c9c27',
+    inactive_item_stroke: '#2a2828',
+    active_item_fill: '#e5b900',
+    active_item_stroke: '#901616'
+  },
   background: {
     color: '#ffffff'
   },
@@ -72,8 +73,14 @@ export default {
       'aria-start-screen': {
         type: 'spritesheet',
         source: 'aria-start-screen.png',
-        width: 525,
-        height: 537
+        width: 344,
+        height: 439
+      },
+      'julen-start-screen': {
+        type: 'spritesheet',
+        source: 'julen-start-screen.png',
+        width: 320,
+        height: 404
       },
       tick: {
         type: 'spritesheet',

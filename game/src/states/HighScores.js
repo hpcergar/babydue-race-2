@@ -29,7 +29,9 @@ export default class extends Phaser.State {
     this.loadingText.anchor.set(0.5)
     this.loadingText.font = this.font
     this.loadingText.fontSize = 40 * this.fontScale
-    this.loadingText.fill = '#504c39'
+    this.loadingText.fill = Config.ui.inactive_item_fill
+    this.loadingText.stroke = Config.ui.inactive_item_stroke
+    this.loadingText.strokeThickness = 6
 
     this.scoreService = new ScoreService()
     this.highscoresService = new HighscoresService()
@@ -62,7 +64,7 @@ export default class extends Phaser.State {
 
     if (!this.header) {
       this.header = this.game.add.text(width * 0.5, headerOffset, '←  High Scores  ')
-      // Go to home
+      // Go home
       this.header.inputEnabled = true
       this.header.events.onInputUp.add(() => this.game.state.start('MainMenu'))
     }
@@ -73,8 +75,9 @@ export default class extends Phaser.State {
     this.header.align = 'center'
     this.header.font = Config.font.title.font
     this.header.fontSize = 90 * this.fontScale
-    this.header.fill = '#504c39'
-    this.header.strokeThickness = 0
+    this.header.fill = Config.ui.inactive_item_fill
+    this.header.stroker = Config.ui.inactive_item_stroke
+    this.header.strokeThickness = 6
 
     if (this.header.width + 20 > width) {
       this.renderHeader(width, height, scale * 0.8)
@@ -112,8 +115,8 @@ export default class extends Phaser.State {
     this.highscores.font = Config.font.title.font
     this.highscores.fontSize = 50 * scale
     this.highscores.align = 'left'
-    this.highscores.fill = '#e5b900'
-    this.highscores.stroke = '#504c39'
+    this.highscores.fill = Config.ui.inactive_item_fill
+    this.highscores.stroke = Config.ui.inactive_item_stroke
     this.highscores.strokeThickness = 4
 
     this.highscores.lineSpacing = 10 * scale

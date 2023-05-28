@@ -1,8 +1,5 @@
 import Config from '../../config'
 
-const MIN_WIDTH = Config.resolutions[0].width // TODO Use according resolution instead of [0]
-const MIN_HEIGHT = Config.resolutions[0].height
-
 class Menu {
   constructor (options, game, world) {
     this.game = game
@@ -10,8 +7,6 @@ class Menu {
     this.options = options
     this.items = []
     this.active = null
-    // this.fontScale = this.game.attr.widthScale || 1;
-    // this.heightScale = this.game.attr.heightScale || 1;
     this.heightScale = 1
     this.fontScale = 1
 
@@ -53,9 +48,9 @@ class Menu {
       text.align = 'center'
       text.font = Config.font.title.font
       text.fontSize = 80 * this.fontScale
-      text.fill = '#e5b900'
-      text.stroke = '#504c39'
-      text.strokeThickness = 0
+      text.fill = Config.ui.inactive_item_fill
+      text.stroke = Config.ui.inactive_item_stroke
+      text.strokeThickness = 6
       text.index = index
       text.callback = navItem.callback
       text.events.onInputUp.add(text.callback)
@@ -65,23 +60,19 @@ class Menu {
     }, this)
   }
 
-  redraw (center = false) {
+  redraw () {
     this.items.forEach((text) => {
-      if (center === false) {
-        text.x = this.getLeftOffset()
-      } else {
-        text.x = this.game.width * 0.5
-      }
+      text.x = this.getLeftOffset()
     })
   }
 
   getLeftOffset () {
-    return Math.max(this.game.width * 0.33, 300)
+    return this.game.width * 0.5
   }
 
   getTopOffset () {
     // Calculate in function of world height
-    return 300 * this.heightScale
+    return 400 * this.heightScale
   }
 
   itemOnActive (item) {
@@ -89,13 +80,15 @@ class Menu {
       this.itemOnInactive(this.items[this.active])
     }
     item.isActive = true
-    item.strokeThickness = 6
+    item.fill = Config.ui.active_item_fill
+    item.stroke = Config.ui.active_item_stroke
     this.active = item.index
   }
 
   itemOnInactive (item) {
     item.isActive = false
-    item.strokeThickness = 0
+    item.fill = Config.ui.inactive_item_fill
+    item.stroke = Config.ui.inactive_item_stroke
   }
 
   getNextIndex () {
