@@ -4,6 +4,7 @@ import SAT from 'SAT'
 import TilemapProvider from '../providers/Tilemap'
 import DecorationProvider from '../providers/Decoration'
 import Background from '../sprites/Background'
+import WaterBackground from '../sprites/WaterBackground'
 import Score from '../services/Score'
 import Rocks from '../sprites/Rocks'
 import Player from '../sprites/Player'
@@ -97,8 +98,10 @@ export default class extends Phaser.State {
     // Decoration: Background layer
     new DecorationProvider(this.map, 'Behind', this.layers[BEHIND_LAYER])
 
-    // Ground
+    // Ground & Ground behind
     this.tilemapProvider = new TilemapProvider(this.map, this.game)
+    this.waterBackground = new WaterBackground(this.game, this.map)
+    this.game.world.bringToTop(this.tilemapProvider.getGroundLayer())
 
     // Mechanics (slow-down, jump)
     new DecorationProvider(this.map, 'Mechanics', this.layers[MECHANICS_LAYER])
@@ -190,8 +193,6 @@ export default class extends Phaser.State {
     } else if (this.textPanel && this.textPanel.update) {
       this.textPanel.update()
     }
-
-    this.layers[BACKGROUND_LAYER].update()
 
     this.overlay.update()
 
@@ -306,9 +307,6 @@ export default class extends Phaser.State {
   }
 
   startDoorTransition () {
-    // Not needed
-    // this.game.world.bringToTop(this.layers[FRONT_LAYER]);
-
     // Stop player in front of the door
     this.player.goToPoint('playerInFrontOfDoor', () => {
       // Display layers accordingly

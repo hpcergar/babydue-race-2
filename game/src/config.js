@@ -36,6 +36,7 @@ export default {
   assets: {
     prefixes: {
       main: 'assets/',
+      image: 'images/',
       spritesheet: 'sprites/',
       'spritesheet-atlas-json': 'sprites/',
       tilemap: 'tilemaps/',
@@ -47,6 +48,10 @@ export default {
 
         // source: ':scale/autumn/autumn.json' // TODO Clean up folder?
         source: ':scale/summer/summer.json'
+      },
+      'water-farground': {
+        type: 'image',
+        source: 'water-farground.png'
       },
       players: {
         type: 'spritesheet-atlas-json',

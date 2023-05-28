@@ -27,8 +27,8 @@ module.exports = smp.wrap({
         ],
         vendor: ['pixi', 'p2', 'phaser', 'webfontloader', 'SAT']
     },
-    // devtool: 'cheap-source-map',
-    devtool: false,
+    devtool: 'cheap-source-map',
+    // devtool: false,
     output: {
         pathinfo: true,
         path: path.resolve(__dirname, 'dist'),

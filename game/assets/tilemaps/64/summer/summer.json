@@ -387,7 +387,7 @@
          "name":"Ground",
          "opacity":1,
          "type":"tilelayer",
-         "visible":false,
+         "visible":true,
          "width":400,
          "x":0,
          "y":0
@@ -1512,8 +1512,8 @@
                  "type":"",
                  "visible":true,
                  "width":0,
-                 "x":102.545454545425,
-                 "y":1536.18181818182
+                 "x":10572.7575757575,
+                 "y":1759.9696969697
                 }],
          "opacity":1,
          "type":"objectgroup",
