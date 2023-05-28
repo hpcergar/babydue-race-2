@@ -123,7 +123,8 @@ export default class extends Phaser.State {
     // Overlay, for transitions
     this.overlay = new Overlay(this.game)
 
-    this.game.world.bringToTop(this.player.getSprite())
+    this.game.world.bringToTop(this.player.getSecondaryCharacterSprite())
+    this.game.world.bringToTop(this.player.getPrimaryCharacterSprite())
 
     // Full screen
     this.game.input.onTap.add(this.scaleService.goFullScreen, this.scaleService)
@@ -184,10 +185,11 @@ export default class extends Phaser.State {
   }
 
   update(game) {
-    let hitGround = this.game.physics.arcade.collide(this.player.getSprite(), this.mainLayer, (player, ground) => this.player.setCollisionData(ground))
+    let hitGround = this.game.physics.arcade.collide(this.player.getPrimaryCharacterSprite(), this.mainLayer, (player, ground) => this.player.setCollisionData(ground))
+    this.game.physics.arcade.collide(this.player.getSecondaryCharacterSprite(), this.mainLayer)
 
     if (!this.isEndAnimation) {
-      this.rocks.update(this.player.getSprite())
+      this.rocks.update(this.player.getPrimaryCharacterSprite())
       this.player.update(hitGround)
       this.score.update()
     } else if (this.textPanel && this.textPanel.update) {
@@ -264,7 +266,7 @@ export default class extends Phaser.State {
 
     // let playerObject = this.player.getObject()
     this.game.world.bringToTop(this.overlay.getObject())
-    this.game.world.bringToTop(this.player.getSprite())
+    this.game.world.bringToTop(this.player.getPrimaryCharacterSprite())
     let time = this.score.get()
 
     // Push new score to API
@@ -278,7 +280,7 @@ export default class extends Phaser.State {
     // Start transition
     // 1. Display overlay
     this.overlay.fade(1000, () => {
-      let playerObject = this.player.getSprite()
+      let playerObject = this.player.getPrimaryCharacterSprite()
       // 2. Move camera to have player on the left
       this.game.camera.follow(null)
       playerObject.body.velocity.x = 0
@@ -312,7 +314,7 @@ export default class extends Phaser.State {
       // Display layers accordingly
       this.game.world.bringToTop(this.tilemapProvider.getGroundLayer())
       this.game.world.bringToTop(this.door.getObject())
-      this.game.world.bringToTop(this.player.getSprite())
+      this.game.world.bringToTop(this.player.getPrimaryCharacterSprite())
       this.game.world.bringToTop(this.layers[FRONT_LAYER])
 
       this.game.camera.follow(null)

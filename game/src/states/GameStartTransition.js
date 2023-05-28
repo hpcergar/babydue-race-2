@@ -64,7 +64,7 @@ export default class extends Phaser.State {
     // Overlay, for transitions
     this.overlay = new Overlay(this.game)
     // Bring player on top of overlay
-    this.game.world.bringToTop(this.player.getSprite())
+    this.game.world.bringToTop(this.player.getPrimaryCharacterSprite())
 
     // For collisions
     this.mainLayer = this.tilemapProvider.getMainLayer()
@@ -116,7 +116,7 @@ export default class extends Phaser.State {
 
   update () {
     // To keep player on the ground
-    this.game.physics.arcade.collide(this.player.getSprite(), this.mainLayer)
+    this.game.physics.arcade.collide(this.player.getPrimaryCharacterSprite(), this.mainLayer)
 
     this.textPanel.update()
   }

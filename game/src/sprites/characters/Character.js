@@ -3,6 +3,8 @@ export class Character {
     sprite;
     game;
     debug;
+    secondaryCharacterLastSpeed = null;
+
 
     constructor (game, debug = false) {
         // Starts
@@ -26,19 +28,44 @@ export class Character {
     }
 
     setActive () {
-        this.sprite.visible = true
-        this.sprite.body.moves = true
-        this.sprite.body.static = false
+        // TODO cleanup
+        // this.sprite.visible = true
+        // this.sprite.body.moves = true
+        // this.sprite.body.static = false
+        this.sprite.tint = 0xffffff
     }
 
     setInactive () {
-        this.sprite.body.moves = false
-        this.sprite.body.static = true
-        this.sprite.visible = false
-        if( this.debug ) console.log(`Disabling ` + this.constructor["name"])
+        // TODO cleanup
+        // this.sprite.body.moves = false
+        // this.sprite.body.static = true
+        // this.sprite.visible = false
+        this.sprite.tint = 0x85a7d6
+
+        this.secondaryCharacterLastSpeed = null
     }
 
     isHittingGround (hitting) {
         return hitting && this.getSprite().body.touching.down
+    }
+
+    updateAsSecondary(primaryCharacter, offset) {
+        if ( this.secondaryCharacterLastSpeed === null ) {
+            this.sprite.body.velocity.x = this.secondaryCharacterLastSpeed = primaryCharacter.sprite.body.velocity.x
+        }
+
+        if (primaryCharacter.sprite.body.velocity.x !== this.sprite.body.velocity.x
+            || primaryCharacter.sprite.body.velocity.y !== this.sprite.body.velocity.y) {
+            this.sprite.body.velocity.x = primaryCharacter.sprite.body.velocity.x
+            this.sprite.body.velocity.y = primaryCharacter.sprite.body.velocity.y
+        }
+
+        if (this.sprite.position.x > primaryCharacter.sprite.position.x - offset) {
+            this.sprite.position.x = primaryCharacter.sprite.position.x - offset
+        }
+
+        if( this.sprite.animations.name !== primaryCharacter.sprite.animations.name ) {
+            this.sprite.animations.play(primaryCharacter.sprite.animations.name)
+        }
     }
 }

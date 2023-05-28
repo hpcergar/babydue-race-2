@@ -45,16 +45,17 @@ export class Aria extends Character {
     }
 
     update (gameState) {
-        // Mechanic: jump (boing!)
         let nextAnimation = null,
             currentAnimation = this.getSprite().animations.name,
             wasJumping = currentAnimation === Constants.animations.ANIMATION_JUMPING,
-            wasDashing = currentAnimation === Constants.animations.ANIMATION_DASH;
+            wasDashing = currentAnimation === Constants.animations.ANIMATION_DASH
+        ;
 
         if (false === gameState.isHittingGround) {
             return
         }
 
+        // Mechanic: jump (boing!)
         if (this.getSprite().slopeId === Constants.slopes.SLOPE_TYPE_JUMP) {
             this.getSprite().body.velocity.y = Constants.mechanics.JUMP
             nextAnimation = Constants.animations.ANIMATION_JUMPING
@@ -87,7 +88,7 @@ export class Aria extends Character {
         }
 
         if (nextAnimation != null && nextAnimation !== currentAnimation) {
-            this.getSprite().animations.play(nextAnimation) // We could throw an event to update both characters
+            this.getSprite().animations.play(nextAnimation)
         }
     }
 }
