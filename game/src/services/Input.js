@@ -8,8 +8,8 @@ export default class {
 
   justDown () {
     return this.game.input.activePointer.justDown
-        || this.game.input.gamepad.pad1.justDown(Phaser.Gamepad.XBOX360_A)
-        || this.game.input.gamepad.pad1.justDown(Phaser.Gamepad.XBOX360_B)
+        || this.game.input.gamepad.pad1.justPressed(Phaser.Gamepad.XBOX360_A)
+        || this.game.input.gamepad.pad1.justPressed(Phaser.Gamepad.XBOX360_B)
         || this.game.input.keyboard.addKey(Phaser.Keyboard.UP).justDown
         || this.game.input.keyboard.addKey(Phaser.Keyboard.ENTER).justDown
         || (this.debug == null && this.game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR).justDown)

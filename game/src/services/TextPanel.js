@@ -59,7 +59,6 @@ export default class {
     // Handle user input
     if (!this.inputIsDown && this.input.isDown()) {
       this.inputIsDown = !this.inputIsDown
-
       this.waitingForUser ? this.nextPage() : this.fullPage()
     } else if (this.inputIsDown && !this.input.isDown()) {
       this.inputIsDown = !this.inputIsDown
