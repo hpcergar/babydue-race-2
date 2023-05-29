@@ -66,7 +66,7 @@ export default class extends Phaser.State {
 
     // STATE
     // Keep these false on production
-    this.debug = true
+    this.debug = false
     this.debugFps = false
 
     if (this.debug || this.debugFps) {

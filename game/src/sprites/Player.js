@@ -82,7 +82,6 @@ export default class {
     copyCharacterProperties(from, to) {
         to.sprite.position = Object.assign({}, from.sprite.position)
         to.sprite.slopeId = from.sprite.slopeId
-        to.sprite.angle = from.sprite.angle
         to.sprite.body.velocity.x = from.sprite.body.velocity.x
         to.sprite.body.velocity.y = from.sprite.body.velocity.y
         to.sprite.scale.x = from.sprite.scale.x

@@ -22,12 +22,12 @@ export default class {
       type: 'PUT',
       contentType: 'application/json',
       headers: this.authService.generateAuthHeader(),
-      success: function (json) {
+      success: function () {
         result = true
       },
       error: function (err) {
         console.log(err)
-        alert('Error in connection')
+        alert('Connection error')
       },
       async: false
     })
@@ -50,7 +50,7 @@ export default class {
       },
       error: function (err) {
         console.log(err)
-        alert('Error in connection')
+        alert('Connection error')
       },
       async: false
     })
@@ -74,7 +74,7 @@ export default class {
       },
       error: function (err) {
         console.log(err)
-        alert('Error in connection')
+        alert('Connection error')
       },
       async: false
     })

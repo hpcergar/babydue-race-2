@@ -7,7 +7,6 @@ import Background from '../sprites/Background'
 import Player from '../sprites/Player'
 import Overlay from '../sprites/Overlay'
 import TextPanel from '../services/TextPanel'
-import Input from '../services/Input'
 import Scale from '../services/Scale'
 
 export default class extends Phaser.State {
@@ -64,7 +63,9 @@ export default class extends Phaser.State {
     // Overlay, for transitions
     this.overlay = new Overlay(this.game)
     // Bring player on top of overlay
+    this.game.world.bringToTop(this.player.getSecondaryCharacterSprite())
     this.game.world.bringToTop(this.player.getPrimaryCharacterSprite())
+    this.player.getSecondaryCharacterSprite().tint = 0xffffff
 
     // For collisions
     this.mainLayer = this.tilemapProvider.getMainLayer()
@@ -117,6 +118,7 @@ export default class extends Phaser.State {
   update () {
     // To keep player on the ground
     this.game.physics.arcade.collide(this.player.getPrimaryCharacterSprite(), this.mainLayer)
+    this.game.physics.arcade.collide(this.player.getSecondaryCharacterSprite(), this.mainLayer)
 
     this.textPanel.update()
   }
