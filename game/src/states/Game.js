@@ -14,6 +14,7 @@ import HighscoresService from '../services/HighscoresService'
 import TextPanel from '../services/TextPanel'
 import Scale from '../services/Scale'
 import ScoreService from '../services/Score'
+import Config from "../config";
 
 // import DebugArcadePhysics from 'DebugArcadePhysics'
 
@@ -66,7 +67,7 @@ export default class extends Phaser.State {
 
     // STATE
     // Keep these false on production
-    this.debug = false
+    this.debug = true
     this.debugFps = false
 
     if (this.debug || this.debugFps) {
@@ -267,6 +268,7 @@ export default class extends Phaser.State {
     // let playerObject = this.player.getObject()
     this.game.world.bringToTop(this.overlay.getObject())
     this.game.world.bringToTop(this.player.getPrimaryCharacterSprite())
+    this.game.world.bringToTop(this.player.getSecondaryCharacterSprite())
     let time = this.score.get()
 
     // Push new score to API
@@ -286,7 +288,7 @@ export default class extends Phaser.State {
       playerObject.body.velocity.x = 0
       this.overlay.resizeBig() // Quick fix: avoid empty spaces on camera travelling
       let moveCameraToRight = this.game.add.tween(this.game.camera).to({
-        x: playerObject.body.x - 70,
+        x: this.game.camera.x + (this.game.camera.width * 0.25) + (this.game.camera.width * 0.125 - Config.player.secondary_player_offset),
         y: this.game.camera.y
       }, 750, Phaser.Easing.Quadratic.InOut)
 
@@ -315,6 +317,7 @@ export default class extends Phaser.State {
       this.game.world.bringToTop(this.tilemapProvider.getGroundLayer())
       this.game.world.bringToTop(this.door.getObject())
       this.game.world.bringToTop(this.player.getPrimaryCharacterSprite())
+      this.game.world.bringToTop(this.player.getSecondaryCharacterSprite())
       this.game.world.bringToTop(this.layers[FRONT_LAYER])
 
       this.game.camera.follow(null)

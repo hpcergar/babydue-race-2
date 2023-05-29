@@ -16,7 +16,8 @@ export default {
   player: {
     // gameVelocity: 400, // For more interesting game ¬¬'
     gameVelocity: 320,
-    endAnimationVelocity: 20
+    endAnimationVelocity: 20.,
+    secondary_player_offset: 40
   },
   localStorageName: 'phaseres6webpack',
   font: {

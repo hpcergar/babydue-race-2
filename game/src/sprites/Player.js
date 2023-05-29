@@ -1,10 +1,11 @@
 import Input from '../services/Input'
 import Points from '../services/Points'
 import Constants from '../constants'
+import Config from '../config'
 import {Aria} from './characters/Aria'
 import {Julen} from './characters/Julen'
 
-const SECONDARY_PLAYER_OFFSET = 40
+const SECONDARY_PLAYER_OFFSET = Config.player.secondary_player_offset
 export default class {
     /**
      * @type Aria|Julen
@@ -57,8 +58,8 @@ export default class {
         this.getPrimaryCharacterSprite().animations.play(Constants.animations.ANIMATION_IDLE)
         this.lookingRight = true
 
-        // CONTROLS
-        this.cursors = this.game.input.keyboard.createCursorKeys()
+        // CONTROLS for debug
+        // this.cursors = this.game.input.keyboard.createCursorKeys()
     }
 
     loadCharacters(game, debug, startX, startY) {
@@ -262,18 +263,30 @@ export default class {
     startEndAnimation() {
         this.isPlayable = false
         this.getPrimaryCharacterSprite().body.velocity.x = Constants.animations.END_ANIMATION_VELOCITY
-        this.getPrimaryCharacterSprite().animations.play(Constants.animations.ANIMATION_RUNNING)
+        this.getPrimaryCharacterSprite().animations.play(Constants.animations.ANIMATION_IDLE)
+        this.getSecondaryCharacterSprite().body.velocity.x = Constants.animations.END_ANIMATION_VELOCITY
+        this.getSecondaryCharacterSprite().animations.play(Constants.animations.ANIMATION_IDLE)
+        this.getSecondaryCharacterSprite().tint = 0xffffff
     }
 
     goToPoint(name, callback = undefined) {
         const [pointX, ] = this.points.getPoint(name)
-        let tween = this.game.add.tween(this.getPrimaryCharacterSprite()).to({
+        this.moveCharacterToPoint(pointX, this.getPrimaryCharacterSprite(), callback)
+        this.moveCharacterToPoint(pointX - SECONDARY_PLAYER_OFFSET, this.getSecondaryCharacterSprite(), callback)
+    }
+
+    moveCharacterToPoint(pointX, sprite, callback) {
+        sprite.animations.play(Constants.animations.ANIMATION_RUNNING)
+        let tween = this.game.add.tween(sprite).to({
             x: pointX,
-            y: this.getPrimaryCharacterSprite().position.y
+            y: sprite.position.y
         }, 750, Phaser.Easing.Quadratic.InOut)
 
         if (callback) {
-            tween.onComplete.addOnce(callback)
+            tween.onComplete.addOnce(() => {
+                sprite.animations.play(Constants.animations.ANIMATION_IDLE)
+                callback()
+            })
         }
         tween.start()
     }
