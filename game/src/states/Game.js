@@ -272,9 +272,11 @@ export default class extends Phaser.State {
     let time = this.score.get()
 
     // Push new score to API
+    this.game.input.gamepad.stop() // Fix gamepad issue
     let bestTime = this.highscoresService.getUserTime()
     let position = this.highscoresService.getUserPositionInTop10(time)
     this.highscoresService.saveTime(time)
+    this.game.input.gamepad.stop()
 
     // Score text & position if <= 10th
     let text = this.getEndText(time, position, bestTime)
