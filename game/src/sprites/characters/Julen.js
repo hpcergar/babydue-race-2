@@ -69,6 +69,8 @@ export class Julen extends Character {
         if (this.getSprite().slopeId === Constants.slopes.SLOPE_TYPE_ROCK) {
             nextAnimation = Constants.animations.ANIMATION_ATTACK
             this.game.camera.shake(0.01, 50, true, Phaser.Camera.SHAKE_HORIZONTAL, true)
+            this.getSprite().slopeId = false
+            this.getSprite().slope.type = 0 // For disabling slopes in destroyed rocks
         }
 
         let isIdle = this.getSprite().body.velocity.x === 0

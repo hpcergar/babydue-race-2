@@ -212,6 +212,7 @@ export default class {
     setCollisionData(ground) {
         if (ground.slope && ground.slope.type > 0) {
             this.getPrimaryCharacterSprite().slopeId = ground.slope.type
+            this.getPrimaryCharacterSprite().slope = ground.slope
         } else {
             this.getPrimaryCharacterSprite().slopeId = false
         }
