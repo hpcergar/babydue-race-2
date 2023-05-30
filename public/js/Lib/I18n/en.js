@@ -10,7 +10,7 @@ define([], function () {
         "Instructions": "Very easy! Just select your favorite day. Three options will appear to indicate the baby's gender. You can choose whichever option you want if it has not already been selected by another player.<br/><br/>If your instinct plays a dirty trick on your selection and you have changed your mind, there is no problem, you can modify it any time you want. <br>What do you need to know?:<br/><br/><b>Date of birth:</b> We are within the time! Time goes so fast... we have to be ready because the baby could be born any time right now! Just one note: the date set by the gynecologist is Jun the 7th (that's why this day has been marked differently). Nevertheless, babys usually born on the day D only on 4% of cases. It could happen before, far before or after Jun 7th, but not much later, because in this situation the gynecologist and the all medical team will kindly invite our baby to get out from mommy's belly.<br/><br/><b>Baby's gender:</b> there are only three basic and fundamental options: Boy and Girl, around 50% each; and Dragon: do not forget we still have two of three Targaryen's eggs at home since our wedding, so anything can happen!",
         "boy": "Boy",
         "girl": "Girl",
-        "dragon": "Dragon",
+        "dragon": "Pokemon",
         "And the winner is":"And the winner is...",
         "Timeline": "Timeline",
         "Timeline introduction": "Baby's steps so far",

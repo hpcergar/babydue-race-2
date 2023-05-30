@@ -8,6 +8,9 @@ if [ -z "$1" ]
     name=$1
 fi
 
+# Test connection
+ssh -i ${BABYDUE_RACE_2_SSH_KEY} ${BABYDUE_RACE_2_LOGIN}@${BABYDUE_RACE_2_HOST} "echo 'Connection successful'"
+
 dirName=dist/${name}
 nameZip=$name.tar.gz
 
@@ -60,6 +63,9 @@ ssh -i ${BABYDUE_RACE_2_SSH_KEY} ${BABYDUE_RACE_2_LOGIN}@${BABYDUE_RACE_2_HOST} 
   chown nodejs -R ${remoteDirVersions}/${name}
   echo 'Installing dependencies'
   runuser -l nodejs -c 'cd ${remoteDirVersions}/${name} && npm install'
+  echo 'Initializing data folders'
+  mkdir -p ${remoteDirVersions}/data/backup
+  chown nodejs -R ${remoteDirVersions}/data
   echo 'Setting up symlinks'
   cd ${remoteDirVersions}/${name} && sh deploy/symlinks.sh ${remoteRoot}
   echo 'Updating latest current symlink'

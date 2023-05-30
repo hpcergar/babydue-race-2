@@ -115,8 +115,8 @@ export default class extends Phaser.State {
     this.highscores.font = Config.font.title.font
     this.highscores.fontSize = 50 * scale
     this.highscores.align = 'left'
-    this.highscores.fill = Config.ui.inactive_item_fill
-    this.highscores.stroke = Config.ui.inactive_item_stroke
+    this.highscores.fill = Config.ui.active_item_fill
+    this.highscores.stroke = Config.ui.active_item_stroke
     this.highscores.strokeThickness = 4
 
     this.highscores.lineSpacing = 10 * scale
