@@ -8,6 +8,7 @@ import Player from '../sprites/Player'
 import Overlay from '../sprites/Overlay'
 import TextPanel from '../services/TextPanel'
 import Scale from '../services/Scale'
+import Config from '../config'
 
 export default class extends Phaser.State {
   init () {
@@ -66,6 +67,7 @@ export default class extends Phaser.State {
     this.game.world.bringToTop(this.player.getSecondaryCharacterSprite())
     this.game.world.bringToTop(this.player.getPrimaryCharacterSprite())
     this.player.getSecondaryCharacterSprite().tint = 0xffffff
+    this.maxPlayersOffset = this.player.getSecondaryCharacterSprite().position.x
 
     // For collisions
     this.mainLayer = this.tilemapProvider.getMainLayer()
@@ -109,6 +111,14 @@ export default class extends Phaser.State {
     this.scaleService.resize(scaleManager, parentBounds, force, (width, height) => {
       let layersMap = this.tilemapProvider.getLayers()
       layersMap['Ground'].resize(width, height)
+
+      if( width < 550 ) {
+        this.player.getSecondaryCharacterSprite().position.x = 40
+        this.player.getPrimaryCharacterSprite().position.x = this.player.getSecondaryCharacterSprite().position.x + Config.player.secondary_player_offset - 10
+      } else {
+        this.player.getSecondaryCharacterSprite().position.x = this.maxPlayersOffset
+        this.player.getPrimaryCharacterSprite().position.x = this.maxPlayersOffset + Config.player.secondary_player_offset
+      }
 
       this.overlay.resize()
       this.mainLayer.resizeWorld()

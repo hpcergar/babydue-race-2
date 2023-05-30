@@ -56,6 +56,7 @@ class Menu {
       text.events.onInputUp.add(text.callback)
       text.events.onInputOver.add(_.bind(this.itemOnActive, this, text))
 
+
       this.items.push(text)
     }, this)
   }
@@ -63,6 +64,9 @@ class Menu {
   redraw () {
     this.items.forEach((text) => {
       text.x = this.getLeftOffset()
+      if(text.width > this.game.width - 50) {
+        text.width = this.game.width - 50
+      }
     })
   }
 
