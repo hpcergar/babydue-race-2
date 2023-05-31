@@ -5,6 +5,7 @@ README_private.md
 
 /dist
 /data/users.json
+/data/users.test.json
 /data/prod-backup
 /data/bets.json
 /data/log

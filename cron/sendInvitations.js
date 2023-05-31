@@ -9,23 +9,22 @@ var _ = require('underscore'),
         from: config.email.sender,
         bcc: config.email.sender,
     },
-    url = 'http://babydue-race.netake.com:3000/?email=:email&signature=:signature',
+    url = 'http://babydue-race-2.hectorpaul.com/?email=:email&signature=:signature',
     signature,
     urlSend,
     
-    filterLevel = 7
+    filterLevel = 1
 ;
 
 
 // Foreach user with level
 _.each(users, function(user, key) {
 
-    if(user['level'] == filterLevel){
+    if(user['level'] === filterLevel){
         user['email'] = key;
 
         console.log('Starting with user ' + key);
         console.log(' -> with language ' + user['lg']);
-
 
         var waitTill = new Date(new Date().getTime() + 2 * 1000);
         while(waitTill > new Date()){}

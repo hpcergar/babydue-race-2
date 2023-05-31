@@ -25,7 +25,7 @@ copyFile(source, backupPath, function (err) {
     if (err) {
         return console.log(err);
     }
-    /*
+
     // send mail with defined transport object
     transporter.sendMail(mailOptions, function (error, info) {
         if (error) {
@@ -33,7 +33,7 @@ copyFile(source, backupPath, function (err) {
         }
         console.log('Message sent: ' + info.response);
     });
-    */
+
     console.log('Backup successful');
 });
 

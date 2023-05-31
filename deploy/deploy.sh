@@ -62,7 +62,7 @@ ssh -i ${BABYDUE_RACE_2_SSH_KEY} ${BABYDUE_RACE_2_LOGIN}@${BABYDUE_RACE_2_HOST} 
   echo 'Changing owner'
   chown nodejs -R ${remoteDirVersions}/${name}
   echo 'Installing dependencies'
-  runuser -l nodejs -c 'cd ${remoteDirVersions}/${name} && npm install'
+  runuser -l nodejs -c 'cd ${remoteDirVersions}/${name} && pm2 stop babydue-race-2 && npm install'
   echo 'Initializing data folders'
   mkdir -p ${remoteDirVersions}/data/backup
   chown nodejs -R ${remoteDirVersions}/data

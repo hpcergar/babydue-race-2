@@ -1,10 +1,7 @@
 'use strict';
 
-// TODO to config
 var cryptoService = require('../service/crypto'),
     salt = require('../config/config').salt || '2D23PsgZdDLMu225'
-
-    ;
 
 /**
  *
@@ -25,7 +22,6 @@ var validate = function(email, signature){
     console.log('Signature should be ' + getSignature(email))
     return (signature === getSignature(email));
 };
-
 
 /**
  * Exposed methods
