@@ -4,9 +4,12 @@ import Constants from '../constants'
 import Config from '../config'
 import {Aria} from './characters/Aria'
 import {Julen} from './characters/Julen'
+import {Transition} from './characters/Transition'
 
 const SECONDARY_PLAYER_OFFSET = Config.player.secondary_player_offset
 export default class {
+
+    characters;
     /**
      * @type Aria|Julen
      */
@@ -15,6 +18,10 @@ export default class {
      * @type Aria|Julen
      */
     secondaryCharacter;
+    /**
+     * @type Transition
+     */
+    transition;
 
     constructor(game, debug = false) {
         // Starts
@@ -66,6 +73,7 @@ export default class {
         this.characters = {}
         this.characters[Constants.characters.CHARACTER_JULEN] = new Julen(game, debug, startX, startY)
         this.characters[Constants.characters.CHARACTER_ARIA] = new Aria(game, debug, startX, startY)
+        this.transition = new Transition(game)
     }
 
     enableCharacter(character, previousCharacter) {
@@ -110,6 +118,7 @@ export default class {
         let nextCharacter = this.secondaryCharacter
         this.enableCharacter(nextCharacter, previousCharacter)
         this.enableSecondaryCharacter(previousCharacter, nextCharacter)
+        this.transition.run(previousCharacter.getSprite().position, nextCharacter.getSprite().position)
     }
 
     getPrimaryCharacterSprite() {

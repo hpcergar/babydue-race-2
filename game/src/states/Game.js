@@ -67,7 +67,7 @@ export default class extends Phaser.State {
 
     // STATE
     // Keep these false on production
-    this.debug = false
+    this.debug = false // TODO Undo
     this.debugFps = false
 
     if (this.debug || this.debugFps) {
@@ -174,7 +174,6 @@ export default class extends Phaser.State {
   }
 
   render(game) {
-    // TODO Remove
     if (this.debug || this.debugFps) {
       this.game.debug.text('FPS: ' + this.game.time.fps || 'FPS: --', 40, 40, '#00ff00')
       // this.game.debug.text("Game width: " + this.game.width + " height: " + this.game.height, 50, 50);
