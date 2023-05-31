@@ -1,12 +1,12 @@
 {
   "Loading...": "Loading...",
-  "start-intro-1": "Aria y Julen quieren ir al encuentro de su hermanito o hermanita, que está a punto de nacer... ¿los guías hasta encontrarle en el lugar y día exacto a través de esta carrera de obstáculos?",
-  "start-intro-2": "¡Tendrán que relevarse para llegar al final, ayúdales a llegar lo más rápido posible!",
-  "Congratulations": "¡Enhorabuena! ¡Has conseguido guiar a Aria y Julen al hospital y terminar la carrera en :time!",
-  "You are in the top 10": "¡Además has conseguido entrar en el top 10!\n\nTu posición es: :position",
-  "Your best time is": "Tu mejor puntuación fue :time",
-  "Play & Vote": "Jugar & votar",
-  "High scores": "Top 10 jugadores",
-  "See polls": "Ver apuestas",
-  "Despegue": "¡Despegue!"
+  "start-intro-1": "Aria y Julen want to meet their brother or sister, who is about to be born... Do you want to guide them to find the baby on the exact day of its birth, through this obstacle course ?",
+  "start-intro-2": "For this, they will have to relieve themselves. Automatically, they will know what to do with the obscacle of their colour. Help them to be the fastest!",
+  "Congratulations": "Congratulations ! Aria & Julen arrived at  hospitan in :time!",
+  "You are in the top 10": "And... you enter the top 10!\n\nYour position is: :position",
+  "Your best time is": "Your best time was :time",
+  "Play & Vote": "Play & vote",
+  "High scores": "Top 10 players",
+  "See polls": "Find bets",
+  "Despegue": "Go!"
 }

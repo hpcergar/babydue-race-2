@@ -14,10 +14,13 @@ var lang = navigator.language,
             ? 'es'
             : (/fr/.test(lang) ? 'fr' : 'en')
     ),
+    urlParams = new URLSearchParams(window.location.search),
+    langParam = urlParams.get('lang'),
+
     conf = _.extend({
         // Birth estimated date
         ESTIMATED_DATE: '2023-07-03',
-        LANG: guessedLang,
+        LANG: langParam || guessedLang,
         EMAIL:  getURLParameter('email'),
         SIGNATURE: getURLParameter('signature')  
     });
