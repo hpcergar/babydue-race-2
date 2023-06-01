@@ -1,7 +1,7 @@
 import CryptoJS from 'crypto-js'
 import { createHmac } from 'crypto'
 
-const saltTime = '75POPsgZdDLMu332'
+const saltTime = '2D23PsgZdDLMu332'
 
 export default class {
   /**
